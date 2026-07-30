@@ -70,6 +70,11 @@ export default function LoginPage() {
         </p>
       </div>
 
+      {/* Back to Home Button */}
+      <Link href="/" className="mb-4 inline-flex items-center gap-1.5 text-xs font-mono text-[#94A3B8] hover:text-[#E2E8F0] transition-colors cursor-pointer">
+        ← Back to Home
+      </Link>
+
       <div className="w-full max-w-md editorial-card p-8 sm:p-10 rounded-xs space-y-6">
         <div className="text-center space-y-1.5 border-b border-border/80 pb-6">
           <h1 className="font-editorial text-3xl font-normal text-text-primary tracking-tight">

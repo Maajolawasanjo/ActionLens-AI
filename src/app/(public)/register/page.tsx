@@ -4,18 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
-  Shield, Building2, UserCheck, Sprout, HeartPulse, User,
-  Eye, EyeOff, CheckCircle2, ArrowRight, AlertCircle
+  Shield, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle2 
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const ROLE_OPTIONS = [
-  { id: "government", name: "Government Official", desc: "Policy, crisis directives & fund authorization", icon: Shield },
-  { id: "ngo", name: "NGO Humanitarian Lead", desc: "Relief supplies, camp logistics & aid allocation", icon: Building2 },
-  { id: "responder", name: "First Responder", desc: "Search & rescue, field triage & evacuation", icon: UserCheck },
-  { id: "farmer", name: "Agro-Agent / Farmer", desc: "Crop vulnerability, soil telemetry & harvest windows", icon: Sprout },
-  { id: "health_worker", name: "Public Health Worker", desc: "Vector surveillance & medical emergency triage", icon: HeartPulse },
-  { id: "citizen", name: "Citizen / Resident", desc: "Localized safety alerts & field report submission", icon: User },
+  { id: "government", name: "Government Official" },
+  { id: "ngo", name: "NGO Humanitarian Lead" },
+  { id: "responder", name: "First Responder" },
+  { id: "farmer", name: "Agro-Agent / Farmer" },
+  { id: "health_worker", name: "Public Health Worker" },
+  { id: "citizen", name: "Citizen / Resident" },
 ];
 
 export default function RegisterPage() {
@@ -78,10 +76,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-6 selection:bg-gold/20 selection:text-gold">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-6 selection:bg-gold/20 selection:text-gold animate-fade-in">
       
       {/* Brand Header */}
-      <div className="mb-8 text-center space-y-2">
+      <div className="mb-6 text-center space-y-2">
         <Link href="/" className="inline-flex items-center gap-2.5">
           <div className="h-8 w-8 rounded-xs bg-gold/10 border border-gold/40 flex items-center justify-center">
             <Shield className="h-4.5 w-4.5 text-gold" />
@@ -95,17 +93,23 @@ export default function RegisterPage() {
         </p>
       </div>
 
-      <div className="w-full max-w-xl editorial-card p-8 sm:p-10 rounded-xs space-y-6">
+      {/* Back to Home Button */}
+      <Link href="/" className="mb-4 inline-flex items-center gap-1.5 text-xs font-mono text-[#94A3B8] hover:text-[#E2E8F0] transition-colors cursor-pointer">
+        ← Back to Home
+      </Link>
+
+      <div className="w-full max-w-md editorial-card p-8 sm:p-10 rounded-xs space-y-6">
         <div className="text-center space-y-1.5 border-b border-border/80 pb-6">
           <h1 className="font-editorial text-3xl font-normal text-text-primary tracking-tight">
-            Create Stakeholder Credentials
+            Create Account
           </h1>
           <p className="text-xs text-text-secondary font-sans leading-relaxed">
-            Initialize your role-based early warning command account
+            Initialize your role-based early warning command credentials
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          
           {/* Full Name */}
           <div className="space-y-1.5">
             <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Full Name</label>
@@ -132,101 +136,72 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Password & Confirm Password */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Password</label>
-              <div className="relative">
-                <input 
-                  type={showPassword ? "text" : "password"} 
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-11 bg-surface-alt/40 border border-border text-text-primary placeholder:text-text-placeholder text-xs font-sans focus:outline-none focus:border-gold transition-colors rounded-xs"
-                  placeholder="At least 8 characters"
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowPassword(!showPassword);
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-gold transition-colors cursor-pointer z-20 p-1"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
+          {/* Stakeholder Role Dropdown */}
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Stakeholder Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-4 py-3 bg-[#151D2A] border border-border text-text-primary text-xs font-sans focus:outline-none focus:border-gold transition-colors rounded-xs"
+            >
+              {ROLE_OPTIONS.map((opt) => (
+                <option key={opt.id} value={opt.id}>
+                  {opt.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-[10px] text-text-secondary font-sans leading-normal">
+              You will refine this and configure your regional focus in the next onboarding step.
+            </p>
+          </div>
 
-            <div className="space-y-1.5">
-              <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Confirm Password</label>
-              <div className="relative">
-                <input 
-                  type={showConfirmPassword ? "text" : "password"} 
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full px-4 py-3 pr-11 bg-surface-alt/40 border border-border text-text-primary placeholder:text-text-placeholder text-xs font-sans focus:outline-none focus:border-gold transition-colors rounded-xs"
-                  placeholder="Re-enter password"
-                />
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setShowConfirmPassword(!showConfirmPassword);
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-gold transition-colors cursor-pointer z-20 p-1"
-                >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
+          {/* Password */}
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Password</label>
+            <div className="relative">
+              <input 
+                type={showPassword ? "text" : "password"} 
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-11 bg-surface-alt/40 border border-border text-text-primary placeholder:text-text-placeholder text-xs font-sans focus:outline-none focus:border-gold transition-colors rounded-xs"
+                placeholder="At least 8 characters"
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowPassword(!showPassword);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-gold transition-colors cursor-pointer z-20 p-1"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
           </div>
 
-          {/* 6 Role Selection Cards */}
-          <div className="space-y-2 pt-2">
-            <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Primary Stakeholder Role</label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {ROLE_OPTIONS.map((r) => {
-                const isSelected = role === r.id;
-                const IconComp = r.icon;
-                return (
-                  <div
-                    key={r.id}
-                    onClick={() => setRole(r.id)}
-                    role="radio"
-                    aria-checked={isSelected}
-                    tabIndex={0}
-                    className={`p-3 rounded-xs border text-left transition-all cursor-pointer flex items-start justify-between gap-3 select-none ${
-                      isSelected 
-                        ? "border-gold bg-gold/10" 
-                        : "border-border bg-surface-alt/20 hover:border-border-focus hover:bg-surface-alt/40"
-                    }`}
-                  >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      <div className={`p-1.5 rounded-xs shrink-0 mt-0.5 ${
-                        isSelected ? "bg-gold text-background" : "bg-surface text-text-muted border border-border"
-                      }`}>
-                        <IconComp className="h-3.5 w-3.5" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className={`text-xs font-bold font-sans ${isSelected ? "text-gold" : "text-text-primary"}`}>
-                          {r.name}
-                        </p>
-                        <p className="text-[10px] text-text-secondary line-clamp-1 leading-tight mt-0.5 font-sans">
-                          {r.desc}
-                        </p>
-                      </div>
-                    </div>
-
-                    {isSelected && (
-                      <CheckCircle2 className="h-4 w-4 text-gold shrink-0 mt-0.5" />
-                    )}
-                  </div>
-                );
-              })}
+          {/* Confirm Password */}
+          <div className="space-y-1.5">
+            <label className="block text-[11px] font-mono text-text-secondary uppercase tracking-widest">Confirm Password</label>
+            <div className="relative">
+              <input 
+                type={showConfirmPassword ? "text" : "password"} 
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-11 bg-surface-alt/40 border border-border text-text-primary placeholder:text-text-placeholder text-xs font-sans focus:outline-none focus:border-gold transition-colors rounded-xs"
+                placeholder="Confirm password"
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowConfirmPassword(!showConfirmPassword);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-gold transition-colors cursor-pointer z-20 p-1"
+              >
+                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
             </div>
           </div>
 
@@ -244,7 +219,7 @@ export default function RegisterPage() {
               disabled={loading} 
               className="w-full text-xs font-bold uppercase tracking-widest text-background bg-gold hover:bg-gold-hover transition-all py-3.5 rounded-xs flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-50"
             >
-              <span>{loading ? "Creating Account..." : "Initialize Account & Continue"}</span>
+              <span>{loading ? "Creating Account..." : "Create Account & Continue"}</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
