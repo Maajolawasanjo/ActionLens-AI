@@ -98,6 +98,41 @@ export default function DashboardPage() {
   const [formFile, setFormFile] = useState<File | null>(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
 
+  // RAG Assistant State
+  const [ragQuery, setRagQuery] = useState("");
+  const [ragAnswer, setRagAnswer] = useState<string | null>(null);
+  const [ragCitations, setRagCitations] = useState<{ title: string; category: string; summary: string }[]>([]);
+  const [isRagLoading, setIsRagLoading] = useState(false);
+
+  const handleRagSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!ragQuery.trim()) return;
+    setIsRagLoading(true);
+    setRagAnswer(null);
+    try {
+      const res = await fetch("/api/ai/assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: ragQuery,
+          role: selectedPersona,
+          region: "Tana River / Kenya",
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setRagAnswer(data.answer);
+        if (data.citations) setRagCitations(data.citations);
+      } else {
+        setRagAnswer("Policy query unavailable. Please verify connection.");
+      }
+    } catch {
+      setRagAnswer("RAG Assistant connection error. Please try again.");
+    } finally {
+      setIsRagLoading(false);
+    }
+  };
+
   // ── Fetch live dashboard data ──
   const fetchDashboard = useCallback(async () => {
     setIsRefreshing(true);
@@ -832,6 +867,61 @@ export default function DashboardPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* RAG Policy Assistant */}
+                <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-[#C5A880]" />
+                    <h3 className="font-editorial text-lg text-[#E2E8F0]">AI Early Warning Policy Assistant</h3>
+                  </div>
+                  <p className="text-xs text-[#94A3B8] leading-relaxed">
+                    Query IGAD & ICPAC early warning protocols, disaster guidelines, and regional contingency frameworks using pgvector RAG.
+                  </p>
+                  
+                  <form onSubmit={handleRagSubmit} className="space-y-2">
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="e.g. What are early action triggers for Tana River basin?"
+                        value={ragQuery}
+                        onChange={(e) => setRagQuery(e.target.value)}
+                        className="flex-1 text-xs bg-[#0B111E] border border-[#2E3A4E] p-2.5 rounded-xs text-[#E2E8F0] placeholder-[#64748B] focus:border-[#C5A880] outline-none font-mono"
+                      />
+                      <button
+                        type="submit"
+                        disabled={isRagLoading}
+                        className="px-4 py-2.5 bg-[#C5A880] text-[#0B111E] font-bold text-xs uppercase tracking-wider rounded-xs hover:bg-[#D4B992] transition-colors cursor-pointer disabled:opacity-50"
+                      >
+                        {isRagLoading ? "Searching..." : "Ask RAG"}
+                      </button>
+                    </div>
+                  </form>
+
+                  {ragAnswer && (
+                    <div className="bg-[#0B111E] border border-[#2E3A4E] p-4 rounded-xs space-y-3">
+                      <div className="flex items-center justify-between border-b border-[#2E3A4E] pb-2">
+                        <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-wider">AI Policy Directive (Grounded)</span>
+                        <span className="text-[9px] font-mono text-[#38A169]">GPT-4o + pgvector</span>
+                      </div>
+                      <div className="text-xs text-[#E2E8F0] whitespace-pre-line leading-relaxed font-sans">
+                        {ragAnswer}
+                      </div>
+
+                      {ragCitations.length > 0 && (
+                        <div className="pt-2 border-t border-[#2E3A4E]/60 space-y-1">
+                          <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">Retrieved Grounding Documents:</span>
+                          <div className="flex flex-wrap gap-1.5">
+                            {ragCitations.map((c, idx) => (
+                              <span key={idx} className="text-[9px] font-mono px-2 py-0.5 bg-[#151D2A] border border-[#2E3A4E] text-[#C5A880] rounded-xs">
+                                📜 {c.title}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
