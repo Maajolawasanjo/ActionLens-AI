@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/* ── Quiet Luxury Civic Trust Design System ────── */
+:root {
+  color-scheme: dark;
+}
+
+@theme inline {
+  /* Fonts */
+  --font-sans: var(--font-sans), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-display), sans-serif;
+
+  /* Colors */
+  --color-background:        #0B111E; /* Midnight Sapphire */
+  --color-surface:           #151D2A; /* Obsidian Navy */
+  --color-surface-alt:       #1E293B; /* Deep Slate Overlay */
+  --color-surface-hover:     #1C2638; /* Card Hover */
+  --color-surface-muted:     #111827; /* Sub-container */
+
+  --color-text-primary:      #E2E8F0; /* Frosted Glass White */
+  --color-text-secondary:    #94A3B8; /* Muted Slate */
+  --color-text-muted:        #64748B; /* Dark Slate Subtext */
+  --color-text-placeholder:  #475569; /* Input Placeholder */
+
+  --color-gold:              #C5A880; /* Champagne Gold */
+  --color-gold-hover:        #D4B992; /* Light Gold */
+  --color-gold-muted:        rgba(197, 168, 128, 0.15);
+
+  --color-watch:             #D9A441; /* Desaturated Amber */
+  --color-warning:           #C1622E; /* Burnt Orange */
+  --color-severe:            #8C2F2F; /* Deep Crimson */
+  --color-success:           #2E7D5B; /* Muted Emerald */
+
+  --color-border:            #2E3A4E; /* Steel Shadow */
+  --color-border-subtle:     #1E293B;
+  --color-border-focus:      #C5A880; /* Gold Focus Ring */
+}
+
+body {
+  background-color: #0B111E !important;
+  color: #E2E8F0 !important;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Custom Editorial Utilities */
+.font-editorial {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Glassmorphism Editorial Card */
+.editorial-card {
+  background-color: #151D2A;
+  border: 1px solid #2E3A4E;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+}
+
+.editorial-card-hover {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.editorial-card-hover:hover {
+  border-color: #C5A880;
+  transform: translateY(-1px);
+}
