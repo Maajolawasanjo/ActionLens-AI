@@ -34,3 +34,19 @@ export async function createClient() {
     },
   });
 }
+
+/**
+ * Creates a Supabase admin client using the Service Role key.
+ * Used for administrative tasks such as seeding or storage management.
+ */
+export function createAdminClient() {
+  const { createClient: createSupabaseClient } = require("@supabase/supabase-js");
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://wwtnbxblnmvpilkzoyqy.supabase.co";
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!serviceKey) {
+    throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable.");
+  }
+
+  return createSupabaseClient(supabaseUrl, serviceKey);
+}

@@ -5,8 +5,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { 
   Shield, ArrowRight, Sprout, Landmark, Users, 
-  AlertTriangle, CheckCircle, ArrowLeft, Send, RefreshCw
+  AlertTriangle, CheckCircle, ArrowLeft, Send, RefreshCw, Camera, Radio
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 import { DEMO_RESOURCE_DOCUMENTS } from "@/lib/demoSeedData";
 
 // ── Types ──
@@ -86,12 +87,15 @@ export default function DashboardPage() {
   const [recommendations, setRecommendations] = useState<LiveRec[]>([]);
   const [dataError, setDataError] = useState<string | null>(null);
 
+  const [isRealtimeActive, setIsRealtimeActive] = useState(false);
+
   // Community Form State
   const [formDescription, setFormDescription] = useState("");
   const [formCategory, setFormCategory] = useState("flood");
   const [formSeverity, setFormSeverity] = useState("moderate");
   const [formLat, setFormLat] = useState("-1.8845");
   const [formLng, setFormLng] = useState("40.1221");
+  const [formFile, setFormFile] = useState<File | null>(null);
   const [formSubmitting, setFormSubmitting] = useState(false);
 
   // ── Fetch live dashboard data ──
@@ -124,6 +128,38 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchDashboard();
+
+    // ── Supabase Realtime Subscription ──
+    try {
+      const supabase = createClient();
+      const channel = supabase
+        .channel("dashboard-realtime-telemetry")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "alerts" },
+          () => {
+            fetchDashboard();
+          }
+        )
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "community_reports" },
+          () => {
+            fetchDashboard();
+          }
+        )
+        .subscribe((status) => {
+          if (status === "SUBSCRIBED") {
+            setIsRealtimeActive(true);
+          }
+        });
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    } catch (err) {
+      console.warn("[Realtime Setup Notice]", err);
+    }
   }, [fetchDashboard]);
 
   // Handle community report submission (POST to API, fallback to local state)
@@ -133,6 +169,29 @@ export default function DashboardPage() {
     setFormSubmitting(true);
 
     try {
+      let uploadedUrl: string | undefined = undefined;
+      let visionResult: any = undefined;
+
+      // ── Step 1: Upload image file if attached ──
+      if (formFile) {
+        const formData = new FormData();
+        formData.append("file", formFile);
+        formData.append("category", formCategory);
+        formData.append("description", formDescription);
+
+        const uploadRes = await fetch("/api/community/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (uploadRes.ok) {
+          const upData = await uploadRes.json();
+          uploadedUrl = upData.public_url;
+          visionResult = upData.vision_analysis;
+        }
+      }
+
+      // ── Step 2: Create community report in DB ──
       const res = await fetch("/api/community/reports", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -142,6 +201,7 @@ export default function DashboardPage() {
           severity: formSeverity,
           latitude: parseFloat(formLat) || -1.8845,
           longitude: parseFloat(formLng) || 40.1221,
+          media_urls: uploadedUrl ? [uploadedUrl] : [],
         }),
       });
 
@@ -150,7 +210,7 @@ export default function DashboardPage() {
         description: formDescription,
         category: formCategory,
         severity: formSeverity,
-        status: "pending",
+        status: visionResult?.verified ? "verified" : "pending",
         latitude: parseFloat(formLat) || -1.8845,
         longitude: parseFloat(formLng) || 40.1221,
         created_at: new Date().toISOString(),
@@ -176,8 +236,9 @@ export default function DashboardPage() {
       setLiveReports([newReport, ...liveReports]);
     } finally {
       setFormDescription("");
+      setFormFile(null);
       setFormSubmitting(false);
-      setSuccessMsg("Hazard report successfully registered. Coordinate geometry updated.");
+      setSuccessMsg("Hazard report successfully registered with media verification.");
       setTimeout(() => setSuccessMsg(""), 5000);
     }
   };
@@ -248,6 +309,12 @@ export default function DashboardPage() {
           </nav>
 
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 bg-[#151D2A] border border-[#2E3A4E] px-3 py-1.5 rounded-xs">
+              <span className={`h-2 w-2 rounded-full ${isRealtimeActive ? "bg-[#38A169] animate-pulse" : "bg-[#94A3B8]"}`} />
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#E2E8F0]">
+                {isRealtimeActive ? "Realtime Active" : "Polling Mode"}
+              </span>
+            </div>
             <Link
               href="/"
               className="text-xs font-mono uppercase tracking-wider text-[#94A3B8] hover:text-[#E2E8F0] transition-colors"
@@ -614,11 +681,30 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
+                <div className="space-y-1">
+                  <label className="text-[10px] font-mono text-[#94A3B8] uppercase flex items-center gap-1.5">
+                    <Camera className="h-3 w-3 text-[#C5A880]" />
+                    Attach Hazard Photograph (Vision Verification)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFormFile(e.target.files?.[0] ?? null)}
+                    className="w-full text-xs bg-[#0B111E] border border-[#2E3A4E] p-2 rounded-xs text-[#94A3B8] file:mr-3 file:py-1 file:px-2.5 file:rounded-xs file:border-0 file:text-[10px] file:font-mono file:bg-[#C5A880] file:text-[#0B111E] file:font-bold"
+                  />
+                  {formFile && (
+                    <p className="text-[9px] font-mono text-[#38A169]">
+                      ✓ Attached: {formFile.name} ({(formFile.size / 1024).toFixed(1)} KB)
+                    </p>
+                  )}
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full py-3 bg-[#C5A880] text-[#0B111E] font-bold text-xs uppercase tracking-widest rounded-xs hover:bg-[#D4B992] transition-colors cursor-pointer"
+                  disabled={formSubmitting}
+                  className="w-full py-3 bg-[#C5A880] text-[#0B111E] font-bold text-xs uppercase tracking-widest rounded-xs hover:bg-[#D4B992] transition-colors cursor-pointer disabled:opacity-50"
                 >
-                  Broadcast Report
+                  {formSubmitting ? "Uploading & Verifying..." : "Broadcast Report"}
                 </button>
               </form>
 

@@ -8,7 +8,7 @@ const schema = z.object({
   country:  z.string().default("Kenya"),
   risk_type: z.string().min(1),
   risk_level: z.string().default("high"),
-  risk_payload: z.record(z.any()).optional(),
+  risk_payload: z.record(z.string(), z.any()).optional(),
   max_recommendations: z.number().int().min(1).max(10).default(3),
 });
 
