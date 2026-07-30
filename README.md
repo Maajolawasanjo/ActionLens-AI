@@ -31,9 +31,10 @@ Climate disasters such as flash floods and severe droughts in the IGAD region (H
 
 ## 🔗 Links & Resources
 
-- **Live Platform Demo**: *[Add Production Deployment URL]*
+- **Live Platform Demo**: [https://action-lens-ai.vercel.app/](https://action-lens-ai.vercel.app/)
 - **Demonstration Video**: *[Add 3-Minute Hackathon Demo Video Link]*
 - **FastAPI Microservice Health**: `http://localhost:8000/health`
+
 
 ---
 
