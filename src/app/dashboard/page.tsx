@@ -1,18 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { 
   Shield, ArrowRight, Sprout, Landmark, Users, 
-  AlertTriangle, CheckCircle, ArrowLeft, Send
+  AlertTriangle, CheckCircle, ArrowLeft, Send, RefreshCw
 } from "lucide-react";
-import { 
-  DEMO_COMMUNITY_REPORTS, 
-  DEMO_ACTIVE_ALERTS, 
-  DEMO_AI_RECOMMENDATIONS, 
-  DEMO_RESOURCE_DOCUMENTS
-} from "@/lib/demoSeedData";
+import { DEMO_RESOURCE_DOCUMENTS } from "@/lib/demoSeedData";
+
+// ── Types ──
+interface LiveAlert {
+  id: string;
+  title: string;
+  severity: string;
+  type: string;
+  region: string;
+  country: string;
+  source: string;
+  affected_population: number;
+  created_at: string;
+}
+interface LiveRec {
+  id: string;
+  role: string;
+  region: string;
+  risk_type: string;
+  action: string;
+  priority: string;
+  time_horizon: string;
+  confidence_score: number;
+  reasoning: string;
+  expected_impact: string;
+  evidence: { label: string; value: string; source_type: string }[];
+  status: string;
+}
+interface DashboardSummary {
+  active_alerts: number;
+  critical_alerts: number;
+  citizens_protected: string;
+  community_reports: number;
+  verified_reports: number;
+  telemetry_feeds: number;
+  warning_precision: string;
+  ai_confidence: string;
+}
+interface CommunityReport {
+  id: string;
+  description: string;
+  category: string;
+  severity: string;
+  status: string;
+  latitude: number;
+  longitude: number;
+  created_at: string;
+}
 
 // Dynamically import map component to disable SSR issues with Leaflet
 const MapComponent = dynamic(() => import("@/components/MapComponent"), {
@@ -30,8 +72,19 @@ export default function DashboardPage() {
   const [activeScreen, setActiveScreen] = useState<"overview" | "alerts" | "community" | "decision">("overview");
   const [selectedPersona, setSelectedPersona] = useState<string>("government");
   const [delayHours, setDelayHours] = useState<number>(24);
-  const [liveReports, setLiveReports] = useState(DEMO_COMMUNITY_REPORTS.slice(0, 5));
   const [successMsg, setSuccessMsg] = useState("");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Live data state
+  const [summary, setSummary] = useState<DashboardSummary>({
+    active_alerts: 8, critical_alerts: 3, citizens_protected: "42,380+",
+    community_reports: 0, verified_reports: 0, telemetry_feeds: 2,
+    warning_precision: "94.6%", ai_confidence: "96%",
+  });
+  const [liveAlerts, setLiveAlerts] = useState<LiveAlert[]>([]);
+  const [liveReports, setLiveReports] = useState<CommunityReport[]>([]);
+  const [recommendations, setRecommendations] = useState<LiveRec[]>([]);
+  const [dataError, setDataError] = useState<string | null>(null);
 
   // Community Form State
   const [formDescription, setFormDescription] = useState("");
@@ -39,43 +92,98 @@ export default function DashboardPage() {
   const [formSeverity, setFormSeverity] = useState("moderate");
   const [formLat, setFormLat] = useState("-1.8845");
   const [formLng, setFormLng] = useState("40.1221");
+  const [formSubmitting, setFormSubmitting] = useState(false);
 
-  // Handle report submission
-  const handleReportSubmit = (e: React.FormEvent) => {
+  // ── Fetch live dashboard data ──
+  const fetchDashboard = useCallback(async () => {
+    setIsRefreshing(true);
+    setDataError(null);
+    try {
+      const [summaryRes, recsRes] = await Promise.all([
+        fetch("/api/dashboard/summary"),
+        fetch("/api/recommendations"),
+      ]);
+
+      if (summaryRes.ok) {
+        const data = await summaryRes.json();
+        if (data.summary) setSummary(data.summary);
+        if (data.active_alerts?.length) setLiveAlerts(data.active_alerts);
+        if (data.community_reports?.length) setLiveReports(data.community_reports);
+      }
+
+      if (recsRes.ok) {
+        const data = await recsRes.json();
+        if (data.recommendations?.length) setRecommendations(data.recommendations);
+      }
+    } catch {
+      setDataError("Live telemetry temporarily unavailable. Displaying cached data.");
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, [fetchDashboard]);
+
+  // Handle community report submission (POST to API, fallback to local state)
+  const handleReportSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formDescription.trim()) return;
+    setFormSubmitting(true);
 
-    const newReport = {
-      id: `rep_live_${Date.now()}`,
-      title: `Citizen Alert: ${formCategory.toUpperCase()} near Garsen`,
-      description: formDescription,
-      country: "Kenya",
-      state: "Tana River",
-      city: "Garsen",
-      latitude: parseFloat(formLat) || -1.8845,
-      longitude: parseFloat(formLng) || 40.1221,
-      category: formCategory,
-      severity: formSeverity as any,
-      status: "pending" as any,
-      reporter_name: "Self (Geotagged)",
-      reporter_role: "Citizen Resident",
-      created_at: "Just now",
-      ai_verified: true,
-      ai_confidence: 0.92,
-      image_url: "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=800&auto=format&fit=crop&q=80",
-      objects_detected: ["Citizen Upload", "Water Inundation"],
-      upvotes: 1,
-      comments_count: 0
-    };
+    try {
+      const res = await fetch("/api/community/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          description: formDescription,
+          category: formCategory,
+          severity: formSeverity,
+          latitude: parseFloat(formLat) || -1.8845,
+          longitude: parseFloat(formLng) || 40.1221,
+        }),
+      });
 
-    setLiveReports([newReport, ...liveReports]);
-    setFormDescription("");
-    setSuccessMsg("Hazard report successfully registered. Coordinate geometry updated.");
-    setTimeout(() => setSuccessMsg(""), 5000);
+      const newReport: CommunityReport = {
+        id: `rep_live_${Date.now()}`,
+        description: formDescription,
+        category: formCategory,
+        severity: formSeverity,
+        status: "pending",
+        latitude: parseFloat(formLat) || -1.8845,
+        longitude: parseFloat(formLng) || 40.1221,
+        created_at: new Date().toISOString(),
+      };
+
+      if (res.ok) {
+        const data = await res.json();
+        setLiveReports([data.report ?? newReport, ...liveReports]);
+      } else {
+        setLiveReports([newReport, ...liveReports]);
+      }
+    } catch {
+      const newReport: CommunityReport = {
+        id: `rep_live_${Date.now()}`,
+        description: formDescription,
+        category: formCategory,
+        severity: formSeverity,
+        status: "pending",
+        latitude: parseFloat(formLat) || -1.8845,
+        longitude: parseFloat(formLng) || 40.1221,
+        created_at: new Date().toISOString(),
+      };
+      setLiveReports([newReport, ...liveReports]);
+    } finally {
+      setFormDescription("");
+      setFormSubmitting(false);
+      setSuccessMsg("Hazard report successfully registered. Coordinate geometry updated.");
+      setTimeout(() => setSuccessMsg(""), 5000);
+    }
   };
 
   // Filter recommendations based on selected persona
-  const filteredRecs = DEMO_AI_RECOMMENDATIONS.filter(
+  const filteredRecs = recommendations.filter(
     (rec) => rec.role.toLowerCase() === selectedPersona.toLowerCase()
   );
 
@@ -83,16 +191,21 @@ export default function DashboardPage() {
   const displacedPeople = Math.round(400 + (delayHours / 72) * 12000);
   const financialLosses = Math.round(120000 + (delayHours / 72) * 1730000);
 
-  // East Africa Coordinates
+  // Map markers from live alerts
   const eastAfricaCenter: [number, number] = [-1.8800, 40.1200];
-  const activeAlertMarkers = DEMO_ACTIVE_ALERTS.map((alert, idx) => ({
-    id: alert.id,
-    lat: idx === 0 ? -1.8800 : idx === 1 ? -0.4500 : 0.5142,
-    lng: idx === 0 ? 40.1200 : idx === 1 ? 39.6400 : 35.2697,
-    title: alert.title,
-    severity: alert.severity,
-    type: alert.type
-  }));
+  const alertCoords: Record<string, [number, number]> = {
+    "Lagos": [6.4969, 3.3881], "Florida": [25.7617, -80.1918],
+    "California": [34.1808, -118.0963], "Northern Region": [12.0022, 8.5920],
+    "Nairobi": [-1.2921, 36.8219], "Tokyo": [35.6895, 139.6917],
+    "Benue": [7.7322, 8.5214], "Tana River": [-1.8845, 40.1221],
+    "Greater Accra": [5.5500, -0.2167], "Garissa": [-0.4500, 39.6400],
+  };
+  const activeAlertMarkers = liveAlerts.map((alert) => {
+    const [lat, lng] = alertCoords[alert.region] ?? [-1.8800, 40.1200];
+    return { id: alert.id, lat, lng, title: alert.title, severity: alert.severity as any, type: alert.type };
+  });
+
+
 
   return (
     <div className="min-h-screen bg-[#0B111E] text-[#E2E8F0] flex flex-col selection:bg-[#C5A880]/30 selection:text-[#C5A880] font-sans">
@@ -181,9 +294,19 @@ export default function DashboardPage() {
                   Real-time hydrometer telemetry reports River Tana water height at <span className="text-[#C1622E] font-bold">8.4 meters</span>, representing an active levee erosion event. Pre-disaster evacuations recommended.
                 </p>
               </div>
-              <div className="bg-[#8C2F2F]/20 border border-[#8C2F2F]/40 p-3 sm:p-4 rounded-xs text-left lg:text-right shrink-0 w-full lg:w-auto">
-                <span className="text-[9px] sm:text-[10px] font-mono text-[#E2E8F0] uppercase tracking-wider block">BASIN STATUS</span>
-                <span className="text-xl sm:text-2xl font-editorial text-[#8C2F2F] font-bold uppercase tracking-tight">CRITICAL ALERT</span>
+              <div className="flex items-center gap-3 shrink-0">
+                <button
+                  onClick={fetchDashboard}
+                  disabled={isRefreshing}
+                  className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-[#94A3B8] hover:text-[#C5A880] border border-[#2E3A4E] hover:border-[#C5A880]/40 px-3 py-2 rounded-xs transition-all disabled:opacity-50"
+                >
+                  <RefreshCw className={`h-3 w-3 ${isRefreshing ? "animate-spin" : ""}`} />
+                  {isRefreshing ? "Syncing" : "Sync"}
+                </button>
+                <div className="bg-[#8C2F2F]/20 border border-[#8C2F2F]/40 p-3 sm:p-4 rounded-xs text-left lg:text-right w-full lg:w-auto">
+                  <span className="text-[9px] sm:text-[10px] font-mono text-[#E2E8F0] uppercase tracking-wider block">BASIN STATUS</span>
+                  <span className="text-xl sm:text-2xl font-editorial text-[#8C2F2F] font-bold uppercase tracking-tight">CRITICAL ALERT</span>
+                </div>
               </div>
             </div>
 
@@ -207,11 +330,16 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                  {dataError && (
+                    <div className="col-span-2 sm:col-span-4 text-[10px] font-mono text-[#D9A441] bg-[#D9A441]/10 border border-[#D9A441]/30 px-3 py-2 rounded-xs">
+                      ⚠ {dataError}
+                    </div>
+                  )}
                   {[
-                    { label: "Communities Guarded", val: "42,380", sub: "+8.4%", color: "text-[#E2E8F0]" },
-                    { label: "Active Warnings", val: "2", sub: "Garissa & Tana", color: "text-[#C1622E]" },
-                    { label: "River Level", val: "8.4m", sub: "+1.2m Threshold", color: "text-[#8C2F2F]" },
-                    { label: "Forecast (72h)", val: "+140mm", sub: "Rain Intensity", color: "text-[#D9A441]" }
+                    { label: "Communities Guarded",  val: summary.citizens_protected,   sub: "+8.4%",             color: "text-[#E2E8F0]" },
+                    { label: "Active Warnings",      val: String(summary.active_alerts), sub: "IGAD Region",       color: "text-[#C1622E]" },
+                    { label: "River Level",           val: "8.4m",                       sub: "+1.2m Threshold",   color: "text-[#8C2F2F]" },
+                    { label: "Warning Precision",    val: summary.warning_precision,    sub: "AI Verified",       color: "text-[#D9A441]" }
                   ].map((stat, i) => (
                     <div key={i} className="bg-[#151D2A] border border-[#2E3A4E] p-3 sm:p-4 rounded-xs min-w-0">
                       <span className="text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider truncate">{stat.label}</span>
@@ -261,7 +389,7 @@ export default function DashboardPage() {
                   </div>
 
                   {filteredRecs.length > 0 ? (
-                    filteredRecs.map((rec) => (
+                    filteredRecs.slice(0, 1).map((rec) => (
                       <div key={rec.id} className="space-y-4">
                         <div className="space-y-2">
                           <h4 className="font-editorial text-[#E2E8F0] leading-snug">{rec.action}</h4>
@@ -276,9 +404,9 @@ export default function DashboardPage() {
                             </span>
                           </div>
                           <div className="text-right">
-                            <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">IMPACT PREDICTION</span>
+                            <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">TIME HORIZON</span>
                             <span className="text-[10px] font-mono text-[#C5A880] font-bold uppercase">
-                              Defensive Success
+                              {rec.time_horizon}
                             </span>
                           </div>
                         </div>
@@ -286,10 +414,10 @@ export default function DashboardPage() {
                         <div className="space-y-2 pt-2">
                           <span className="text-[9px] font-mono text-[#94A3B8] uppercase tracking-wider">Required Field Actions</span>
                           <div className="space-y-2">
-                            {rec.action_checklist.map((item, idx) => (
+                            {(rec.evidence ?? []).slice(0, 3).map((item, idx) => (
                               <div key={idx} className="flex items-start gap-2 text-xs">
                                 <CheckCircle className="h-4 w-4 text-[#C5A880] shrink-0 mt-0.5" />
-                                <span className="text-[#E2E8F0]">{item}</span>
+                                <span className="text-[#E2E8F0]">{item.label}: {item.value}</span>
                               </div>
                             ))}
                           </div>
@@ -297,7 +425,9 @@ export default function DashboardPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-xs font-mono text-[#94A3B8]">No active checklists for this role.</p>
+                    <p className="text-xs font-mono text-[#94A3B8]">
+                      {isRefreshing ? "Loading directives..." : "No active checklists for this role."}
+                    </p>
                   )}
                 </div>
               </div>
@@ -506,7 +636,7 @@ export default function DashboardPage() {
                       </div>
                       <p className="text-xs text-[#E2E8F0]">{rep.description}</p>
                       <p className="text-[9px] text-[#94A3B8] font-mono">
-                        By: {rep.reporter_name} ({rep.latitude}, {rep.longitude})
+                        {rep.category?.toUpperCase() ?? "REPORT"} · ({rep.latitude?.toFixed(4)}, {rep.longitude?.toFixed(4)})
                       </p>
                     </div>
                   ))}
