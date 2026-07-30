@@ -53,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-6 selection:bg-gold/20 selection:text-gold">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-4 sm:p-6 selection:bg-gold/20 selection:text-gold">
       
       {/* Brand Header */}
       <div className="mb-8 text-center space-y-2">
@@ -75,9 +75,9 @@ export default function LoginPage() {
         ← Back to Home
       </Link>
 
-      <div className="w-full max-w-md editorial-card p-8 sm:p-10 rounded-xs space-y-6">
+      <div className="w-full max-w-md editorial-card p-4 sm:p-10 rounded-xs space-y-6">
         <div className="text-center space-y-1.5 border-b border-border/80 pb-6">
-          <h1 className="font-editorial text-3xl font-normal text-text-primary tracking-tight">
+          <h1 className="font-editorial text-2xl sm:text-3xl font-normal text-text-primary tracking-tight leading-tight">
             Sign In to ActionLens
           </h1>
           <p className="text-xs text-text-secondary font-sans leading-relaxed">

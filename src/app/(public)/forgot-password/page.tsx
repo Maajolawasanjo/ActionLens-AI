@@ -40,13 +40,13 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-6 selection:bg-gold/20 selection:text-gold">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-4 sm:p-6 selection:bg-gold/20 selection:text-gold">
       
       {/* Brand Header */}
       <div className="mb-8 text-center space-y-2">
         <Link href="/" className="inline-flex items-center gap-2.5">
           <div className="h-8 w-8 rounded-xs bg-gold/10 border border-gold/40 flex items-center justify-center">
-            <Shield className="h-4.5 w-4.5 text-gold" />
+            <img src="/app-icon.png" alt="AL" className="h-4.5 w-4.5 object-contain" />
           </div>
           <span className="font-editorial text-2xl font-bold tracking-tight text-text-primary">
             ActionLens <span className="text-gold font-sans text-xs tracking-widest uppercase">AI</span>
@@ -57,7 +57,7 @@ export default function ForgotPasswordPage() {
         </p>
       </div>
 
-      <div className="w-full max-w-md editorial-card p-8 sm:p-10 rounded-xs space-y-6">
+      <div className="w-full max-w-md editorial-card p-4 sm:p-10 rounded-xs space-y-6">
         {step === "form" ? (
           <div className="space-y-6">
             <Link
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
             </Link>
 
             <div className="space-y-1.5 border-b border-border/80 pb-4">
-              <h1 className="font-editorial text-3xl font-normal text-text-primary tracking-tight">
+              <h1 className="font-editorial text-2xl sm:text-3xl font-normal text-text-primary tracking-tight leading-tight">
                 Reset Password
               </h1>
               <p className="text-xs text-text-secondary font-sans leading-relaxed">
@@ -113,7 +113,7 @@ export default function ForgotPasswordPage() {
             </div>
 
             <div className="space-y-2">
-              <h2 className="font-editorial text-3xl font-normal text-text-primary">
+              <h2 className="font-editorial text-2xl sm:text-3xl font-normal text-text-primary leading-tight">
                 Check Your Inbox
               </h2>
               <p className="text-xs text-text-secondary font-sans leading-relaxed">

@@ -99,16 +99,16 @@ export default function DashboardPage() {
       
       {/* ── HEADER ── */}
       <header className="w-full border-b border-[#2E3A4E] bg-[#0B111E]/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/15 border border-[#C5A880]/40 flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/15 border border-[#C5A880]/40 flex items-center justify-center shrink-0">
               <img src="/app-icon.png" alt="AL" className="h-5 w-5 object-contain" />
             </div>
-            <div>
-              <Link href="/" className="font-editorial text-xl tracking-tight text-[#E2E8F0] font-bold block">
+            <div className="min-w-0">
+              <Link href="/" className="font-editorial text-lg sm:text-xl tracking-tight text-[#E2E8F0] font-bold block truncate">
                 ActionLens <span className="text-[#C5A880] font-sans text-xs tracking-widest uppercase ml-1 font-semibold">AI</span>
               </Link>
-              <p className="text-[9px] text-[#94A3B8] uppercase tracking-widest font-mono">IGAD Region Disaster Intelligence</p>
+              <p className="text-[9px] text-[#94A3B8] uppercase tracking-widest font-mono hidden min-[360px]:block truncate">IGAD Region Disaster Intelligence</p>
             </div>
           </div>
 
@@ -146,7 +146,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Mobile Screen Tab Selectors */}
-      <div className="md:hidden flex justify-around border-b border-[#2E3A4E] bg-[#151D2A] py-3 px-4">
+      <div className="md:hidden flex justify-start min-[360px]:justify-around overflow-x-auto border-b border-[#2E3A4E] bg-[#151D2A] py-3 px-4 gap-2 scrollbar-none">
         {[
           { id: "overview", label: "Overview" },
           { id: "alerts", label: "Alert" },
@@ -156,7 +156,7 @@ export default function DashboardPage() {
           <button
             key={tab.id}
             onClick={() => setActiveScreen(tab.id as any)}
-            className={`text-[10px] font-mono uppercase tracking-wider py-1.5 px-3 rounded-xs ${
+            className={`text-[10px] font-mono uppercase tracking-wider py-1.5 px-3 rounded-xs shrink-0 ${
               activeScreen === tab.id ? "bg-[#C5A880] text-[#0B111E] font-bold" : "text-[#94A3B8]"
             }`}
           >
@@ -166,24 +166,24 @@ export default function DashboardPage() {
       </div>
 
       {/* ── MAIN CONTENT CONTAINER ── */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
         
         {/* ──────── SCREEN 1: REGIONAL RISK OVERVIEW ──────── */}
         {activeScreen === "overview" && (
           <div className="space-y-8">
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-4 border-b border-[#2E3A4E] pb-6">
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0">
                 <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest">Active Watch</span>
-                <h1 className="font-editorial text-3xl sm:text-5xl font-normal text-[#E2E8F0]">
+                <h1 className="font-editorial text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal text-[#E2E8F0] leading-tight">
                   Garsen Basin Water Discharge Past Critical Threshold
                 </h1>
-                <p className="text-sm text-[#94A3B8] max-w-3xl">
+                <p className="text-xs sm:text-sm text-[#94A3B8] max-w-3xl leading-relaxed">
                   Real-time hydrometer telemetry reports River Tana water height at <span className="text-[#C1622E] font-bold">8.4 meters</span>, representing an active levee erosion event. Pre-disaster evacuations recommended.
                 </p>
               </div>
-              <div className="bg-[#8C2F2F]/20 border border-[#8C2F2F]/40 p-4 rounded-xs text-right shrink-0">
-                <span className="text-[10px] font-mono text-[#E2E8F0] uppercase tracking-wider block">BASIN STATUS</span>
-                <span className="text-2xl font-editorial text-[#8C2F2F] font-bold uppercase tracking-tight">CRITICAL ALERT</span>
+              <div className="bg-[#8C2F2F]/20 border border-[#8C2F2F]/40 p-3 sm:p-4 rounded-xs text-left lg:text-right shrink-0 w-full lg:w-auto">
+                <span className="text-[9px] sm:text-[10px] font-mono text-[#E2E8F0] uppercase tracking-wider block">BASIN STATUS</span>
+                <span className="text-xl sm:text-2xl font-editorial text-[#8C2F2F] font-bold uppercase tracking-tight">CRITICAL ALERT</span>
               </div>
             </div>
 
@@ -196,7 +196,7 @@ export default function DashboardPage() {
                       <span className="text-xs font-mono uppercase tracking-wider font-bold">East Africa Regional Risk Map</span>
                     </div>
                   </div>
-                  <div className="h-[400px]">
+                  <div className="h-[250px] sm:h-[350px] md:h-[400px]">
                     <MapComponent 
                       center={eastAfricaCenter} 
                       zoom={7} 
@@ -206,17 +206,17 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                   {[
                     { label: "Communities Guarded", val: "42,380", sub: "+8.4%", color: "text-[#E2E8F0]" },
                     { label: "Active Warnings", val: "2", sub: "Garissa & Tana", color: "text-[#C1622E]" },
                     { label: "River Level", val: "8.4m", sub: "+1.2m Threshold", color: "text-[#8C2F2F]" },
                     { label: "Forecast (72h)", val: "+140mm", sub: "Rain Intensity", color: "text-[#D9A441]" }
                   ].map((stat, i) => (
-                    <div key={i} className="bg-[#151D2A] border border-[#2E3A4E] p-4 rounded-xs">
-                      <span className="text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">{stat.label}</span>
-                      <span className={`text-2xl font-editorial font-bold tabular-nums block mt-2 ${stat.color}`}>{stat.val}</span>
-                      <span className="text-[9px] font-mono text-[#94A3B8] uppercase mt-1 block">{stat.sub}</span>
+                    <div key={i} className="bg-[#151D2A] border border-[#2E3A4E] p-3 sm:p-4 rounded-xs min-w-0">
+                      <span className="text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider truncate">{stat.label}</span>
+                      <span className={`text-lg sm:text-2xl font-editorial font-bold tabular-nums block mt-1 sm:mt-2 truncate ${stat.color}`}>{stat.val}</span>
+                      <span className="text-[8px] sm:text-[9px] font-mono text-[#94A3B8] uppercase mt-0.5 sm:mt-1 block truncate">{stat.sub}</span>
                     </div>
                   ))}
                 </div>
@@ -309,42 +309,42 @@ export default function DashboardPage() {
         {activeScreen === "alerts" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-6">
-              <div className="bg-[#151D2A] border border-[#2E3A4E] p-8 rounded-xs space-y-4">
+              <div className="bg-[#151D2A] border border-[#2E3A4E] p-4 sm:p-8 rounded-xs space-y-4">
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="text-[10px] font-mono px-2 py-0.5 bg-[#8C2F2F]/20 border border-[#8C2F2F]/40 text-[#8C2F2F] font-bold uppercase">
                     Level 4 Severe
                   </span>
                   <span className="text-xs font-mono text-[#94A3B8]">Issued by: KMD Hydrological Service</span>
-                  <span className="text-xs font-mono text-[#94A3B8] ml-auto">Expires: 18h</span>
+                  <span className="text-xs font-mono text-[#94A3B8] sm:ml-auto">Expires: 18h</span>
                 </div>
                 
-                <h1 className="font-editorial text-3xl sm:text-4xl text-[#E2E8F0]">
+                <h1 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0] leading-tight">
                   Garsen Levee Erosion & Flood Basin Cresting
                 </h1>
                 
-                <p className="text-sm text-[#94A3B8] leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
                   Upper catchment heavy precipitation has caused river discharge volumes to surge to 1,420 m³/s. Physical telemetry indicators identify early-stage structural fractures in the sector B-12 earthen levee wall. Floodwaters are projected to breach Garsen central farmlands in under 12 hours.
                 </p>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-[#2E3A4E]/60">
+                <div className="grid grid-cols-1 min-[340px]:grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-[#2E3A4E]/60">
                   <div>
                     <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">AFFECTED POPULATION</span>
-                    <span className="text-xl font-mono font-bold text-[#E2E8F0] tabular-nums">12,400</span>
+                    <span className="text-lg sm:text-xl font-mono font-bold text-[#E2E8F0] tabular-nums">12,400</span>
                   </div>
                   <div>
                     <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">TARGET CORRIDOR</span>
-                    <span className="text-xl font-mono font-bold text-[#E2E8F0]">Garsen Basin</span>
+                    <span className="text-lg sm:text-xl font-mono font-bold text-[#E2E8F0]">Garsen Basin</span>
                   </div>
                   <div>
                     <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">GPS COORDINATES</span>
-                    <span className="text-xl font-mono font-bold text-[#E2E8F0] tabular-nums">-1.8800, 40.1200</span>
+                    <span className="text-lg sm:text-xl font-mono font-bold text-[#E2E8F0] tabular-nums truncate block">-1.8800, 40.1200</span>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
-                <h3 className="font-editorial text-xl text-[#E2E8F0]">Evacuation Operations Map</h3>
-                <div className="h-[280px]">
+              <div className="bg-[#151D2A] border border-[#2E3A4E] p-4 sm:p-6 rounded-xs space-y-4">
+                <h3 className="font-editorial text-lg sm:text-xl text-[#E2E8F0]">Evacuation Operations Map</h3>
+                <div className="h-[220px] sm:h-[280px]">
                   <MapComponent 
                     center={[-1.8800, 40.1200]} 
                     zoom={10} 
@@ -363,9 +363,9 @@ export default function DashboardPage() {
             </div>
 
             <div className="lg:col-span-4 space-y-6">
-              <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-6">
+              <div className="bg-[#151D2A] border border-[#2E3A4E] p-4 sm:p-6 rounded-xs space-y-6">
                 <div>
-                  <h3 className="font-editorial text-lg text-[#E2E8F0]">Chronological Incident Log</h3>
+                  <h3 className="font-editorial text-base sm:text-lg text-[#E2E8F0]">Chronological Incident Log</h3>
                   <p className="text-[10px] text-[#94A3B8] mt-1 font-mono uppercase">
                     Milestones (UTC +3 hours)
                   </p>
@@ -395,7 +395,7 @@ export default function DashboardPage() {
 
         {/* ──────── SCREEN 3: CITIZEN MOBILE VIEW ──────── */}
         {activeScreen === "community" && (
-          <div className="max-w-md mx-auto bg-[#151D2A] border border-[#2E3A4E] rounded-xs overflow-hidden shadow-2xl">
+          <div className="w-full max-w-md mx-auto bg-[#151D2A] border border-[#2E3A4E] rounded-xs overflow-hidden shadow-2xl">
             <div className="bg-[#0B111E] border-b border-[#2E3A4E] p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-[#8C2F2F] animate-pulse" />
@@ -520,7 +520,7 @@ export default function DashboardPage() {
         {activeScreen === "decision" && (
           <div className="space-y-8">
             <div className="border-b border-[#2E3A4E] pb-6">
-              <h1 className="font-editorial text-3xl sm:text-4xl text-[#E2E8F0]">
+              <h1 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
                 ICPAC Coordinator Control Panel
               </h1>
               <p className="text-xs text-[#94A3B8] font-mono uppercase tracking-widest mt-1">
@@ -564,20 +564,20 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="border border-[#2E3A4E]/60 p-4 rounded-xs">
-                    <span className="text-[10px] font-mono text-[#94A3B8] uppercase block">
+                  <div className="border border-[#2E3A4E]/60 p-3 sm:p-4 rounded-xs min-w-0">
+                    <span className="text-[9px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block truncate">
                       Projected Displaced Population
                     </span>
-                    <span className="text-3xl font-editorial font-bold text-[#8C2F2F] block mt-1 tabular-nums">
+                    <span className="text-xl sm:text-3xl font-editorial font-bold text-[#8C2F2F] block mt-1 tabular-nums truncate">
                       {displacedPeople.toLocaleString()}
                     </span>
                   </div>
 
-                  <div className="border border-[#2E3A4E]/60 p-4 rounded-xs">
-                    <span className="text-[10px] font-mono text-[#94A3B8] uppercase block">
+                  <div className="border border-[#2E3A4E]/60 p-3 sm:p-4 rounded-xs min-w-0">
+                    <span className="text-[9px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block truncate">
                       Estimated Financial Loss (USD)
                     </span>
-                    <span className="text-3xl font-editorial font-bold text-[#E2E8F0] block mt-1 tabular-nums">
+                    <span className="text-xl sm:text-3xl font-editorial font-bold text-[#E2E8F0] block mt-1 tabular-nums truncate">
                       ${financialLosses.toLocaleString()}
                     </span>
                   </div>

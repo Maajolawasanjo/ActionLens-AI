@@ -74,7 +74,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B111E] text-[#E2E8F0] flex flex-col justify-center items-center p-6 selection:bg-gold/20 selection:text-gold">
+    <div className="min-h-screen bg-[#0B111E] text-[#E2E8F0] flex flex-col justify-center items-center p-4 sm:p-6 selection:bg-gold/20 selection:text-gold">
       
       {/* Brand Strip */}
       <div className="mb-6 text-center space-y-1">
@@ -86,7 +86,7 @@ export default function OnboardingPage() {
         </p>
       </div>
 
-      <div className="w-full max-w-xl editorial-card p-8 sm:p-10 rounded-xs space-y-6">
+      <div className="w-full max-w-xl editorial-card p-4 sm:p-10 rounded-xs space-y-6">
         
         {/* Welcome */}
         {step === "welcome" && (
@@ -96,7 +96,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="space-y-2 border-b border-border/80 pb-6">
-              <h1 className="font-editorial text-3xl font-normal text-text-primary">
+              <h1 className="font-editorial text-2xl sm:text-3xl font-normal text-text-primary leading-tight">
                 Welcome to ActionLens AI
               </h1>
               <p className="text-xs text-text-secondary font-sans leading-relaxed">
@@ -283,7 +283,7 @@ export default function OnboardingPage() {
             </div>
 
             <div className="space-y-2 border-b border-border/80 pb-6">
-              <h2 className="font-editorial text-3xl font-normal text-text-primary">
+              <h2 className="font-editorial text-2xl sm:text-3xl font-normal text-text-primary leading-tight">
                 Configuration Complete
               </h2>
               <p className="text-xs text-text-secondary font-sans leading-relaxed">
