@@ -22,7 +22,7 @@ export default function MarketingLandingPage() {
               <span className="font-editorial text-base sm:text-xl tracking-tight text-[#E2E8F0] font-bold block truncate">
                 ActionLens <span className="text-[#C5A880] font-sans text-[10px] sm:text-xs tracking-widest uppercase ml-1 font-semibold">AI</span>
               </span>
-              <p className="text-[8px] sm:text-[9px] text-[#94A3B8] uppercase tracking-widest font-mono truncate hidden min-[380px]:block">
+              <p className="text-[8px] sm:text-[9px] text-[#94A3B8] uppercase tracking-widest font-mono truncate hidden sm:block">
                 IGAD Region Disaster Intelligence
               </p>
             </div>
@@ -31,7 +31,7 @@ export default function MarketingLandingPage() {
           <div className="flex items-center gap-3 sm:gap-6 shrink-0">
             <Link
               href="/login"
-              className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#94A3B8] hover:text-[#E2E8F0] transition-colors"
+              className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#94A3B8] hover:text-[#E2E8F0] transition-colors hidden sm:block"
             >
               Sign In
             </Link>
@@ -39,7 +39,7 @@ export default function MarketingLandingPage() {
               href="/register"
               className="text-[10px] sm:text-xs font-mono uppercase tracking-wider text-[#0B111E] bg-[#C5A880] hover:bg-[#D4B992] transition-colors py-1.5 px-3 sm:py-2.5 sm:px-5 rounded-xs font-bold shadow-md shadow-[#C5A880]/5"
             >
-              Initialize Console
+              <span className="hidden sm:inline">Initialize </span>Console
             </Link>
           </div>
         </div>
@@ -93,16 +93,16 @@ export default function MarketingLandingPage() {
             {/* High-status regional metrics */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-[#2E3A4E]/60 max-w-lg">
               <div>
-                <span className="text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Citizens Protected</span>
-                <span className="text-lg sm:text-2xl font-editorial font-bold text-[#E2E8F0] tabular-nums mt-1">42,380+</span>
+                <span className="text-[7px] min-[360px]:text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Citizens Protected</span>
+                <span className="text-base sm:text-2xl font-editorial font-bold text-[#E2E8F0] tabular-nums mt-1">42,380+</span>
               </div>
               <div>
-                <span className="text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Warning Precision</span>
-                <span className="text-lg sm:text-2xl font-editorial font-bold text-[#E2E8F0] tabular-nums mt-1">94.6%</span>
+                <span className="text-[7px] min-[360px]:text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Warning Precision</span>
+                <span className="text-base sm:text-2xl font-editorial font-bold text-[#E2E8F0] tabular-nums mt-1">94.6%</span>
               </div>
               <div>
-                <span className="text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Telemetry Feeds</span>
-                <span className="text-lg sm:text-2xl font-editorial font-bold text-[#E2E8F0] mt-1 block truncate">128 / Active</span>
+                <span className="text-[7px] min-[360px]:text-[8px] sm:text-[10px] font-mono text-[#94A3B8] uppercase block tracking-wider">Telemetry Feeds</span>
+                <span className="text-base sm:text-2xl font-editorial font-bold text-[#E2E8F0] mt-1 block truncate">128 / Active</span>
               </div>
             </div>
           </div>
