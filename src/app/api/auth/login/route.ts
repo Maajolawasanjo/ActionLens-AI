@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { LoginSchema } from "@/lib/validations/auth";
+import { verifyUserCredentials } from "@/lib/auth-store";
 import { ZodError } from "zod";
 
 export async function POST(request: Request) {
@@ -8,63 +8,45 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = LoginSchema.parse(body);
 
-    const supabase = await createClient();
+    const user = verifyUserCredentials(validatedData.email, validatedData.password);
 
-    const { data: authData, error: authError } =
-      await supabase.auth.signInWithPassword({
-        email: validatedData.email,
-        password: validatedData.password,
-      });
-
-    if (authError) {
+    if (!user) {
       return NextResponse.json(
         { error: "Invalid email or password." },
         { status: 401 }
       );
     }
 
-    if (!authData.user) {
-      return NextResponse.json(
-        { error: "Authentication failed." },
-        { status: 401 }
-      );
-    }
-
-    // Fetch user profile from PostgreSQL
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", authData.user.id)
-      .single();
-
-    if (profileError) {
-      return NextResponse.json(
-        { error: "Failed to load user profile." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
-      {
-        status: "success",
-        data: {
-          user: profile,
+    const response = NextResponse.json({
+      status: "success",
+      data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          full_name: user.full_name,
+          role: user.role,
+          onboarding_complete: user.onboarding_complete,
+          created_at: user.created_at,
         },
-        message: "Logged in successfully.",
       },
-      { status: 200 }
-    );
+      message: "Logged in successfully.",
+    });
+
+    response.cookies.set("actionlens_demo_user", "true", { path: "/", maxAge: 86400 });
+    response.cookies.set("actionlens_user_id", user.id, { path: "/", maxAge: 86400 });
+
+    return response;
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { error: "Validation Error", details: error.issues },
+        { error: "Invalid email or password." },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { error: "An unexpected error occurred during login." },
-      { status: 500 }
+      { error: "Invalid email or password." },
+      { status: 401 }
     );
   }
 }
