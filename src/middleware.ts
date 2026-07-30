@@ -5,11 +5,9 @@ export async function middleware(request: NextRequest) {
   const response = await updateSession(request);
 
   // ── Security Headers ──────────────────────────────────────────────
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval'`,
     `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
     `font-src 'self' https://fonts.gstatic.com`,
     `img-src 'self' blob: data: https://*.supabase.co https://*.supabase.storage https://picsum.photos https://images.unsplash.com https://*.unsplash.com https://raw.githubusercontent.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.basemaps.cartocdn.com https://cdnjs.cloudflare.com`,

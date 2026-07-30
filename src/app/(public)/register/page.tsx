@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
-  Shield, Eye, EyeOff, ArrowRight, AlertCircle, CheckCircle2 
+  Eye, EyeOff, ArrowRight, AlertCircle, Check 
 } from "lucide-react";
 
 const ROLE_OPTIONS = [
@@ -38,49 +38,82 @@ export default function RegisterPage() {
   }>({});
   const [loading, setLoading] = useState(false);
 
+  // Real-time Field Change Handlers
+  const handleFullNameChange = (val: string) => {
+    setFullName(val);
+    if (fieldErrors.fullName && val.trim().length >= 2) {
+      setFieldErrors((prev) => ({ ...prev, fullName: undefined }));
+    }
+  };
+
+  const handleEmailChange = (val: string) => {
+    setEmail(val);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (fieldErrors.email && emailRegex.test(val.trim())) {
+      setFieldErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  };
+
+  const handlePasswordChange = (val: string) => {
+    setPassword(val);
+    const errors: { password?: string; confirmPassword?: string } = {};
+
+    if (val.length < 8) {
+      errors.password = "Password must be at least 8 characters long.";
+    } else if (!/\d/.test(val)) {
+      errors.password = "Password must contain at least one number (0-9).";
+    } else {
+      errors.password = undefined;
+    }
+
+    if (confirmPassword && val !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match.";
+    } else if (confirmPassword && val === confirmPassword) {
+      errors.confirmPassword = undefined;
+    }
+
+    setFieldErrors((prev) => ({ ...prev, ...errors }));
+  };
+
+  const handleConfirmPasswordChange = (val: string) => {
+    setConfirmPassword(val);
+    if (password && val !== password) {
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: "Passwords do not match." }));
+    } else {
+      setFieldErrors((prev) => ({ ...prev, confirmPassword: undefined }));
+    }
+  };
+
   const validateForm = () => {
     const errors: typeof fieldErrors = {};
     const sanitizedName = fullName.trim();
     const sanitizedEmail = email.trim().toLowerCase();
 
-    // 1. Full Name Validation
     if (!sanitizedName) {
       errors.fullName = "Full name is required.";
     } else if (sanitizedName.length < 2) {
       errors.fullName = "Full name must be at least 2 characters.";
-    } else if (sanitizedName.length > 100) {
-      errors.fullName = "Full name cannot exceed 100 characters.";
     }
 
-    // 2. Email Format Validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!sanitizedEmail) {
       errors.email = "Email address is required.";
     } else if (!emailRegex.test(sanitizedEmail)) {
-      errors.email = "Please enter a valid email address (e.g. name@domain.com).";
+      errors.email = "Please enter a valid email address.";
     }
 
-    // 3. Role Validation
-    const validRoles = ["government", "ngo", "responder", "farmer", "health_worker", "citizen"];
-    if (!role || !validRoles.includes(role)) {
-      errors.role = "Please select a valid stakeholder role.";
-    }
-
-    // 4. Password Strength Validation (Min 8 chars, at least 1 number)
-    const hasNumber = /\d/.test(password);
     if (!password) {
       errors.password = "Password is required.";
     } else if (password.length < 8) {
       errors.password = "Password must be at least 8 characters long.";
-    } else if (!hasNumber) {
+    } else if (!/\d/.test(password)) {
       errors.password = "Password must contain at least one number (0-9).";
     }
 
-    // 5. Confirm Password Match
     if (!confirmPassword) {
       errors.confirmPassword = "Please confirm your password.";
     } else if (password !== confirmPassword) {
-      errors.confirmPassword = "Passwords do not match. Please verify both fields.";
+      errors.confirmPassword = "Passwords do not match.";
     }
 
     setFieldErrors(errors);
@@ -116,13 +149,23 @@ export default function RegisterPage() {
       localStorage.setItem("actionlens_user_role", role);
       document.cookie = `actionlens_demo_user=true; path=/; max-age=86400`;
 
-      router.push("/onboarding");
+      // Redirect immediately to onboarding flow
+      try {
+        router.push("/onboarding");
+      } catch {
+        window.location.href = "/onboarding";
+      }
     } catch (err: any) {
-      setFieldErrors({ general: err.message || "An unexpected network error occurred." });
+      setFieldErrors({ general: err.message || "An unexpected error occurred." });
     } finally {
       setLoading(false);
     }
   };
+
+  // Password Live Metrics
+  const isMinLength = password.length >= 8;
+  const hasNumber = /\d/.test(password);
+  const isMatch = confirmPassword.length > 0 && password === confirmPassword;
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-[#0B111E] text-[#E2E8F0] p-4 sm:p-6 selection:bg-[#C5A880]/20 selection:text-[#C5A880]">
@@ -165,7 +208,7 @@ export default function RegisterPage() {
               type="text" 
               value={fullName}
               maxLength={100}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => handleFullNameChange(e.target.value)}
               className={`w-full px-4 py-3 bg-[#0B111E] border ${fieldErrors.fullName ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
               placeholder="e.g. Director Jane Doe"
             />
@@ -180,7 +223,7 @@ export default function RegisterPage() {
             <input 
               type="email" 
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleEmailChange(e.target.value)}
               className={`w-full px-4 py-3 bg-[#0B111E] border ${fieldErrors.email ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
               placeholder="name@icpac.int"
             />
@@ -215,22 +258,32 @@ export default function RegisterPage() {
               <input 
                 type={showPassword ? "text" : "password"} 
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handlePasswordChange(e.target.value)}
                 className={`w-full px-4 py-3 pr-11 bg-[#0B111E] border ${fieldErrors.password ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
                 placeholder="At least 8 characters & 1 number"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#C5A880] transition-colors cursor-pointer z-20 p-1"
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            {fieldErrors.password ? (
+
+            {/* Real-time Password Strength Check Indicators */}
+            <div className="flex items-center gap-3 pt-1 text-[10px] font-mono">
+              <span className={`inline-flex items-center gap-1 ${isMinLength ? 'text-[#C5A880]' : 'text-[#64748B]'}`}>
+                {isMinLength ? <Check className="h-3 w-3" /> : "•"} 8+ Chars
+              </span>
+              <span className={`inline-flex items-center gap-1 ${hasNumber ? 'text-[#C5A880]' : 'text-[#64748B]'}`}>
+                {hasNumber ? <Check className="h-3 w-3" /> : "•"} Has Number
+              </span>
+            </div>
+
+            {fieldErrors.password && (
               <p className="text-[10px] text-[#8C2F2F] font-mono">{fieldErrors.password}</p>
-            ) : (
-              <p className="text-[10px] text-[#64748B] font-mono">Requires min 8 chars with at least 1 number.</p>
             )}
           </div>
 
@@ -241,19 +294,27 @@ export default function RegisterPage() {
               <input 
                 type={showConfirmPassword ? "text" : "password"} 
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => handleConfirmPasswordChange(e.target.value)}
                 className={`w-full px-4 py-3 pr-11 bg-[#0B111E] border ${fieldErrors.confirmPassword ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
                 placeholder="Confirm password"
               />
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#C5A880] transition-colors cursor-pointer z-20 p-1"
+                aria-label="Toggle confirm password visibility"
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
-            {fieldErrors.confirmPassword && (
+
+            {confirmPassword.length > 0 && (
+              <p className={`text-[10px] font-mono ${isMatch ? 'text-[#C5A880]' : 'text-[#8C2F2F]'}`}>
+                {isMatch ? "✓ Passwords match" : "✗ Passwords do not match"}
+              </p>
+            )}
+
+            {fieldErrors.confirmPassword && !isMatch && (
               <p className="text-[10px] text-[#8C2F2F] font-mono">{fieldErrors.confirmPassword}</p>
             )}
           </div>

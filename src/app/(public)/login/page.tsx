@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Shield, Eye, EyeOff, ArrowRight, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,6 +17,20 @@ export default function LoginPage() {
     general?: string;
   }>({});
   const [loading, setLoading] = useState(false);
+
+  const handleEmailChange = (val: string) => {
+    setEmail(val);
+    if (fieldErrors.email && val.trim()) {
+      setFieldErrors((prev) => ({ ...prev, email: undefined }));
+    }
+  };
+
+  const handlePasswordChange = (val: string) => {
+    setPassword(val);
+    if (fieldErrors.password && val) {
+      setFieldErrors((prev) => ({ ...prev, password: undefined }));
+    }
+  };
 
   const validateForm = () => {
     const errors: typeof fieldErrors = {};
@@ -62,10 +76,12 @@ export default function LoginPage() {
       }
       document.cookie = `actionlens_demo_user=true; path=/; max-age=86400`;
 
-      if (data?.data?.user?.onboarding_complete === false) {
-        router.push("/onboarding");
-      } else {
-        router.push("/dashboard");
+      const targetPath = data?.data?.user?.onboarding_complete === false ? "/onboarding" : "/dashboard";
+
+      try {
+        router.push(targetPath);
+      } catch {
+        window.location.href = targetPath;
       }
     } catch {
       setFieldErrors({ general: "Invalid email or password." });
@@ -112,7 +128,7 @@ export default function LoginPage() {
             <input 
               type="email" 
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => handleEmailChange(e.target.value)}
               className={`w-full px-4 py-3 bg-[#0B111E] border ${fieldErrors.email ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
               placeholder="official@ndma.go.ke"
             />
@@ -132,14 +148,15 @@ export default function LoginPage() {
               <input 
                 type={showPassword ? "text" : "password"} 
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => handlePasswordChange(e.target.value)}
                 className={`w-full px-4 py-3 pr-11 bg-[#0B111E] border ${fieldErrors.password ? 'border-[#8C2F2F]' : 'border-[#2E3A4E]'} text-[#E2E8F0] placeholder:text-[#64748B] text-xs font-sans focus:outline-none focus:border-[#C5A880] transition-colors rounded-xs`}
                 placeholder="••••••••"
               />
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-[#C5A880] transition-colors cursor-pointer z-20 p-1"
+                aria-label="Toggle password visibility"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
