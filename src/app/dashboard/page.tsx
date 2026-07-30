@@ -101,8 +101,8 @@ export default function DashboardPage() {
       <header className="w-full border-b border-[#2E3A4E] bg-[#0B111E]/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/10 border border-[#C5A880]/40 flex items-center justify-center">
-              <Shield className="h-5 w-5 text-[#C5A880]" />
+            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/15 border border-[#C5A880]/40 flex items-center justify-center">
+              <img src="/app-icon.png" alt="AL" className="h-5 w-5 object-contain" />
             </div>
             <div>
               <Link href="/" className="font-editorial text-xl tracking-tight text-[#E2E8F0] font-bold block">
@@ -652,7 +652,7 @@ export default function DashboardPage() {
       <footer className="w-full border-t border-[#2E3A4E] bg-[#0B111E]/80 backdrop-blur-md py-8 mt-12">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-[#94A3B8]">
           <div className="flex items-center gap-2">
-            <Shield className="h-4 w-4 text-[#C5A880]" />
+            <img src="/app-icon.png" alt="AL" className="h-4 w-4 object-contain" />
             <span>ActionLens Disaster Intelligence Grid</span>
           </div>
           <div>

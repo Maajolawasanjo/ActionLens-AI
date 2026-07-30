@@ -58,8 +58,8 @@ export default function LoginPage() {
       {/* Brand Header */}
       <div className="mb-8 text-center space-y-2">
         <Link href="/" className="inline-flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-xs bg-gold/10 border border-gold/40 flex items-center justify-center">
-            <Shield className="h-4.5 w-4.5 text-gold" />
+          <div className="h-8 w-8 rounded-xs bg-gold/15 border border-gold/40 flex items-center justify-center">
+            <img src="/app-icon.png" alt="AL" className="h-4.5 w-4.5 object-contain" />
           </div>
           <span className="font-editorial text-2xl font-bold tracking-tight text-text-primary">
             ActionLens <span className="text-gold font-sans text-xs tracking-widest uppercase">AI</span>

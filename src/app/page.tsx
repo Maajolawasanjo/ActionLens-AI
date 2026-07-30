@@ -15,8 +15,8 @@ export default function MarketingLandingPage() {
       <header className="w-full border-b border-[#2E3A4E] bg-[#0B111E]/85 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/10 border border-[#C5A880]/40 flex items-center justify-center">
-              <Shield className="h-5 w-5 text-[#C5A880]" />
+            <div className="h-9 w-9 rounded-xs bg-[#C5A880]/15 border border-[#C5A880]/40 flex items-center justify-center">
+              <img src="/app-icon.png" alt="AL" className="h-5 w-5 object-contain" />
             </div>
             <div>
               <span className="font-editorial text-xl tracking-tight text-[#E2E8F0] font-bold block">
@@ -43,9 +43,16 @@ export default function MarketingLandingPage() {
         </div>
       </header>
 
-      {/* ── SECTION 1: HERO & COMMAND GATEWAY ── */}
-      <section className="relative min-h-[85vh] flex flex-col justify-center border-b border-[#2E3A4E] py-20 bg-[radial-gradient(ellipse_at_top_right,#1C2638_0%,#0B111E_70%)]">
-        <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="relative min-h-[85vh] flex flex-col justify-center border-b border-[#2E3A4E] py-20 overflow-hidden">
+        {/* Background Image - Dimmed to 60% opacity */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-60 pointer-events-none" 
+          style={{ backgroundImage: "url('/BACKGROUND.png')" }} 
+        />
+        {/* Radial overlay to blend background image with dark mode bg */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,transparent_20%,#0B111E_85%)] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
           
           <div className="lg:col-span-7 space-y-8">
             <div className="space-y-4">
@@ -444,7 +451,7 @@ export default function MarketingLandingPage() {
           {/* Col 1: Brand & Status */}
           <div className="md:col-span-4 space-y-4">
             <div className="flex items-center gap-2.5">
-              <Shield className="h-5 w-5 text-[#C5A880]" />
+              <img src="/app-icon.png" alt="AL" className="h-5 w-5 object-contain" />
               <span className="font-editorial text-lg text-[#E2E8F0] font-bold">ActionLens AI</span>
             </div>
             <p className="text-[11px] leading-relaxed max-w-xs font-sans">
