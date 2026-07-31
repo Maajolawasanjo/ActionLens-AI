@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { RegisterSchema } from "@/lib/validations/auth";
 import { findUserByEmail, createUserProfile } from "@/lib/auth-store";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createClient } from "@/lib/supabase/server";
 import { ZodError } from "zod";
 
 export async function POST(request: Request) {
@@ -46,6 +47,17 @@ export async function POST(request: Request) {
             onboarding_complete: false,
             created_at: authData.user.created_at,
           };
+
+          // Sign the user in immediately to set the session cookies
+          try {
+            const supabase = await createClient();
+            await supabase.auth.signInWithPassword({
+              email,
+              password: validatedData.password,
+            });
+          } catch (signInErr) {
+            console.warn("[Register Auto-Login Failed]", signInErr);
+          }
         }
       } catch (err) {
         console.warn("[Supabase Register Attempt Failed, falling back]", err);
