@@ -39,6 +39,19 @@ export async function POST(request: Request) {
         }
 
         if (authData.user) {
+          // Explicitly create/upsert the profile row to guarantee existence
+          try {
+            await adminClient.from("profiles").upsert({
+              id: authData.user.id,
+              email: authData.user.email || email,
+              full_name: validatedData.full_name,
+              role: validatedData.role,
+              onboarding_complete: false,
+            });
+          } catch (profileErr) {
+            console.warn("[Register Explicit Profile Upsert Failed]", profileErr);
+          }
+
           user = {
             id: authData.user.id,
             email: authData.user.email || email,

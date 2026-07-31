@@ -23,11 +23,33 @@ export async function POST(request: Request) {
 
         if (!authError && authData.user) {
           // Fetch user profile from database
-          const { data: profile } = await supabase
+          let { data: profile } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", authData.user.id)
             .single();
+
+          if (!profile) {
+            try {
+              const { data: newProfile } = await supabase
+                .from("profiles")
+                .insert({
+                  id: authData.user.id,
+                  email: authData.user.email || validatedData.email,
+                  full_name: authData.user.user_metadata?.full_name || "User",
+                  role: authData.user.user_metadata?.role || "government",
+                  onboarding_complete: false,
+                })
+                .select()
+                .single();
+
+              if (newProfile) {
+                profile = newProfile;
+              }
+            } catch (insertErr) {
+              console.error("[Login Explicit Profile Insert Failed]", insertErr);
+            }
+          }
 
           if (profile) {
             user = {
