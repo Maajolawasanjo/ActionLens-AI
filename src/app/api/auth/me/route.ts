@@ -54,10 +54,13 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { error: "Unauthorized session." },
       { status: 401 }
     );
+    response.cookies.set("actionlens_demo_user", "", { path: "/", maxAge: 0 });
+    response.cookies.set("actionlens_user_id", "", { path: "/", maxAge: 0 });
+    return response;
   } catch {
     return NextResponse.json(
       { error: "Failed to retrieve user session." },
@@ -65,3 +68,4 @@ export async function GET() {
     );
   }
 }
+

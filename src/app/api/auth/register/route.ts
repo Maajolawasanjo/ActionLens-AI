@@ -10,55 +10,91 @@ export async function POST(request: Request) {
     const validatedData = RegisterSchema.parse(body);
     const email = validatedData.email.toLowerCase().trim();
 
-    // Check duplicate email
-    const existing = findUserByEmail(email);
-    if (existing) {
-      return NextResponse.json(
-        { error: "An account with this email address already exists. Please sign in instead." },
-        { status: 400 }
-      );
+    let user = null;
+    let fallbackUsed = false;
+
+    // 1. Try Supabase Auth First (via Admin SDK to auto-confirm)
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const adminClient = createAdminClient();
+        const { data: authData, error: authError } = await adminClient.auth.admin.createUser({
+          email,
+          password: validatedData.password,
+          email_confirm: true,
+          user_metadata: {
+            full_name: validatedData.full_name,
+            role: validatedData.role,
+          }
+        });
+
+        if (authError) {
+          if (authError.message.includes("exists") || authError.status === 400) {
+            return NextResponse.json(
+              { error: "An account with this email address already exists. Please sign in instead." },
+              { status: 400 }
+            );
+          }
+          throw authError;
+        }
+
+        if (authData.user) {
+          user = {
+            id: authData.user.id,
+            email: authData.user.email || email,
+            full_name: validatedData.full_name,
+            role: validatedData.role,
+            onboarding_complete: false,
+            created_at: authData.user.created_at,
+          };
+        }
+      } catch (err) {
+        console.warn("[Supabase Register Attempt Failed, falling back]", err);
+        fallbackUsed = true;
+      }
+    } else {
+      fallbackUsed = true;
     }
 
-    // Create user in local persistent store
-    const newProfile = createUserProfile({
-      email: email,
-      password: validatedData.password,
-      full_name: validatedData.full_name,
-      role: validatedData.role,
-    });
+    // 2. Fallback to Local Persistent Store
+    if (fallbackUsed || !user) {
+      // Check duplicate email in local store
+      const existing = findUserByEmail(email);
+      if (existing) {
+        return NextResponse.json(
+          { error: "An account with this email address already exists. Please sign in instead." },
+          { status: 400 }
+        );
+      }
 
-    // Also attempt Supabase upsert (non-blocking)
-    try {
-      const adminClient = createAdminClient();
-      await adminClient.from("profiles").upsert({
+      // Create user in local persistent store
+      const newProfile = createUserProfile({
+        email: email,
+        password: validatedData.password,
+        full_name: validatedData.full_name,
+        role: validatedData.role,
+      });
+
+      user = {
         id: newProfile.id,
         email: newProfile.email,
         full_name: newProfile.full_name,
         role: newProfile.role,
+        onboarding_complete: newProfile.onboarding_complete,
         created_at: newProfile.created_at,
-      }, { onConflict: "id" });
-    } catch {}
+      };
+    }
 
     const response = NextResponse.json(
       {
         status: "success",
-        data: {
-          user: {
-            id: newProfile.id,
-            email: newProfile.email,
-            full_name: newProfile.full_name,
-            role: newProfile.role,
-            onboarding_complete: newProfile.onboarding_complete,
-            created_at: newProfile.created_at,
-          },
-        },
+        data: { user },
         message: "Account created successfully.",
       },
       { status: 201 }
     );
 
     response.cookies.set("actionlens_demo_user", "true", { path: "/", maxAge: 86400 });
-    response.cookies.set("actionlens_user_id", newProfile.id, { path: "/", maxAge: 86400 });
+    response.cookies.set("actionlens_user_id", user.id, { path: "/", maxAge: 86400 });
 
     return response;
   } catch (error: any) {
@@ -76,3 +112,4 @@ export async function POST(request: Request) {
     );
   }
 }
+
