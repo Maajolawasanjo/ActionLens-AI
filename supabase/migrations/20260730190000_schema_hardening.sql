@@ -111,7 +111,7 @@ BEGIN
     NEW.id,
     NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'full_name', SPLIT_PART(NEW.email, '@', 1)),
-    COALESCE(NEW.raw_user_meta_data->>'role', 'government'),
+    COALESCE((NEW.raw_user_meta_data->>'role')::public.user_role, 'government'::public.user_role),
     FALSE
   )
   ON CONFLICT (id) DO UPDATE SET

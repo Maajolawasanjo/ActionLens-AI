@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { LoginSchema } from "@/lib/validations/auth";
-import { createClient } from "@/lib/supabase/server";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { ZodError } from "zod";
 
@@ -9,7 +9,27 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = LoginSchema.parse(body);
 
-    const supabase = await createClient();
+    const cookieStore = await cookies();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const cookiesToSetLater: Array<{ name: string; value: string; options: any }> = [];
+
+    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            try {
+              cookieStore.set(name, value, options);
+            } catch {}
+            cookiesToSetLater.push({ name, value, options });
+          });
+        },
+      },
+    });
+
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email: validatedData.email,
       password: validatedData.password,
@@ -73,14 +93,10 @@ export async function POST(request: Request) {
       message: "Logged in successfully.",
     });
 
-    // Copy cookies from Next.js cookieStore to the response headers
-    const cookieStore = await cookies();
-    for (const cookie of cookieStore.getAll()) {
-      response.cookies.set(cookie.name, cookie.value, {
-        path: "/",
-        ...cookie.options,
-      });
-    }
+    // Apply cookies that were set during authentication
+    cookiesToSetLater.forEach(({ name, value, options }) => {
+      response.cookies.set(name, value, options);
+    });
 
     return response;
   } catch (error) {
