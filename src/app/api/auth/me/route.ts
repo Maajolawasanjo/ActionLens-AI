@@ -1,41 +1,62 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { findUserById } from "@/lib/auth-store";
 
 export async function GET() {
   try {
-    const supabase = await createClient();
+    // 1. Try Supabase Auth First
+    try {
+      const supabase = await createClient();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
 
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
+      if (!authError && user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
 
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: "Unauthorized session." },
-        { status: 401 }
-      );
+        if (profile) {
+          return NextResponse.json({
+            status: "success",
+            data: { user: profile },
+          });
+        }
+      }
+    } catch (e) {
+      console.warn("[Supabase Auth Check Failure]", e);
     }
 
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", user.id)
-      .single();
-
-    if (profileError || !profile) {
-      return NextResponse.json(
-        { error: "User profile not found." },
-        { status: 404 }
-      );
+    // 2. Fallback to Local Persistent Auth Store
+    const cookieStore = await cookies();
+    const localUserId = cookieStore.get("actionlens_user_id")?.value;
+    
+    if (localUserId) {
+      const localUser = findUserById(localUserId);
+      if (localUser) {
+        return NextResponse.json({
+          status: "success",
+          data: {
+            user: {
+              id: localUser.id,
+              email: localUser.email,
+              full_name: localUser.full_name,
+              role: localUser.role,
+              onboarding_complete: localUser.onboarding_complete,
+              created_at: localUser.created_at,
+            }
+          }
+        });
+      }
     }
 
     return NextResponse.json(
-      {
-        status: "success",
-        data: { user: profile },
-      },
-      { status: 200 }
+      { error: "Unauthorized session." },
+      { status: 401 }
     );
   } catch {
     return NextResponse.json(

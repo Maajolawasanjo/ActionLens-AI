@@ -4,22 +4,21 @@ import { createClient } from "@/lib/supabase/server";
 export async function POST() {
   try {
     const supabase = await createClient();
-    const { error } = await supabase.auth.signOut();
+    await supabase.auth.signOut();
 
-    if (error) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         status: "success",
         message: "Logged out successfully.",
       },
       { status: 200 }
     );
+
+    // Clear local persistent session cookies
+    response.cookies.set("actionlens_demo_user", "", { path: "/", maxAge: 0 });
+    response.cookies.set("actionlens_user_id", "", { path: "/", maxAge: 0 });
+
+    return response;
   } catch {
     return NextResponse.json(
       { error: "An unexpected error occurred during logout." },

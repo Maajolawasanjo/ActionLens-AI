@@ -42,6 +42,11 @@ export function findUserByEmail(email: string): UserProfile | null {
   return Object.values(users).find((u) => u.email.toLowerCase() === lower) ?? null;
 }
 
+export function findUserById(id: string): UserProfile | null {
+  const users = loadUsers();
+  return users[id] ?? null;
+}
+
 export function createUserProfile(input: {
   email: string;
   password: string;
@@ -75,4 +80,12 @@ export function verifyUserCredentials(email: string, password: string): UserProf
     return user;
   }
   return null;
+}
+
+export function completeUserOnboarding(id: string) {
+  const users = loadUsers();
+  if (users[id]) {
+    users[id].onboarding_complete = true;
+    saveUsers(users);
+  }
 }

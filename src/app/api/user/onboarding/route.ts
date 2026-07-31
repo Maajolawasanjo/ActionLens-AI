@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { OnboardingSchema } from "@/lib/validations/auth";
 import { ZodError } from "zod";
+import { completeUserOnboarding } from "@/lib/auth-store";
+import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   return handleOnboarding(request);
@@ -15,6 +17,13 @@ async function handleOnboarding(request: Request) {
     const body = await request.json();
     const validatedData = OnboardingSchema.safeParse(body);
     
+    // Save onboarding completion state locally
+    const cookieStore = await cookies();
+    const localUserId = cookieStore.get("actionlens_user_id")?.value;
+    if (localUserId) {
+      completeUserOnboarding(localUserId);
+    }
+
     return NextResponse.json(
       {
         status: "success",

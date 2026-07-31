@@ -1,13 +1,55 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { 
   Shield, ArrowRight, Radio, Brain, Users, MapPin, 
   BarChart3, AlertTriangle, Globe2, Clock, Landmark,
-  HeartPulse, Sprout, ShieldAlert, Cpu, Database, Network
+  HeartPulse, Sprout, ShieldAlert, Cpu, Database, Network,
+  ChevronDown, HelpCircle, Star, Sparkles, CheckCircle2
 } from "lucide-react";
 
 export default function MarketingLandingPage() {
+  // State for landing page interactive demo
+  const [demoRole, setDemoRole] = useState<"citizen" | "government">("citizen");
+  const [demoStatus, setDemoStatus] = useState<"idle" | "loading" | "resolved">("idle");
+  const [demoImage, setDemoImage] = useState<string | null>(null);
+
+  // FAQ state
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Trigger landing page interactive simulation
+  const handleTriggerDemo = () => {
+    setDemoStatus("loading");
+    setTimeout(() => {
+      setDemoStatus("resolved");
+    }, 1500);
+  };
+
+  const handleDemoImageSelect = (img: string) => {
+    setDemoImage(img);
+    setDemoStatus("idle");
+  };
+
+  const faqItems = [
+    {
+      q: "What makes ActionLens AI different from traditional early warning alerts?",
+      a: "Traditional alerts only announce a hazard, which leads to 'Action Paralysis' due to lack of instructions. ActionLens AI instantly translates climate telemetry coordinates into tailored checklist directives for citizens, rescuers, and government officials."
+    },
+    {
+      q: "How does the Vision AI verification system safeguard against false alarms?",
+      a: "Our FastAPI service utilizes GPT-4o Vision to analyze community-uploaded hazard images. It cross-references the reported category and description with visual features, returning a confidence index and filtering out spoofed uploads before alerts propagate."
+    },
+    {
+      q: "Can the platform operate in low-bandwidth or disconnected conditions?",
+      a: "Yes. The UI is built with extremely lightweight asset sizes and minimal JSON packet payloads. It integrates with localized SMS/USSD logs to transmit safety warnings even when mobile internet lines are severed during storms."
+    },
+    {
+      q: "What region is ActionLens AI currently customized for?",
+      a: "ActionLens is tailored for the East Africa IGAD sub-region (including Kenya, Ethiopia, Somalia, and Nigeria), utilizing localized weather advisories from ICPAC and policy documents from NDMA."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-[#0B111E] text-[#E2E8F0] flex flex-col selection:bg-[#C5A880]/30 selection:text-[#C5A880] font-sans">
       
@@ -45,7 +87,7 @@ export default function MarketingLandingPage() {
         </div>
       </header>
 
-      {/* ── SECTION 1: HERO & COMMAND GATEWAY ── */}
+      {/* ── SECTION 1: HERO & COMMAND GATEWAY (LEFT ALONE) ── */}
       <section className="relative min-h-[85vh] flex flex-col justify-center border-b border-[#2E3A4E] py-12 sm:py-20 overflow-hidden">
         {/* Background Image - Dimmed to 60% opacity */}
         <div 
@@ -160,7 +202,24 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 2: THE CRISIS COMMUNICATION GAP (THE PROBLEM) ── */}
+      {/* ── SECTION 2: TRUSTED ORGANIZATIONS ── */}
+      <section className="py-8 bg-[#0B111E] border-b border-[#2E3A4E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <span className="text-[9px] font-mono text-[#64748B] uppercase tracking-widest text-center block mb-4">
+            INTEGRATED CLIMATE PARTNERS & DATA SOURCES
+          </span>
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-60 hover:opacity-85 transition-opacity duration-300">
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">NDMA KENYA</span>
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">ICPAC EAST AFRICA</span>
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">SEMA NIGERIA</span>
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">UNHCR SOUTHERN</span>
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">RED CROSS FIELD</span>
+            <span className="font-mono font-bold text-xs text-[#E2E8F0] tracking-widest">WFP LOGISTICS</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 3: THE CRISIS COMMUNICATION GAP (THE PROBLEM) ── */}
       <section className="py-16 sm:py-24 bg-[#0B111E] border-b border-[#2E3A4E]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-6 sm:space-y-8">
           <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">The Core Challenge</span>
@@ -178,7 +237,216 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 3: HOW IT WORKS (THE CORE LOOP) ── */}
+      {/* ── SECTION 4: INTERACTIVE DEMO SELECTOR ── */}
+      <section className="py-16 sm:py-24 bg-[#111827] border-b border-[#2E3A4E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">Simulated Interface</span>
+            <h2 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
+              Test the AI Decision Engine
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              Select a stakeholder persona to simulate how ActionLens processes alerts into instant action protocols.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Controls */}
+            <div className="lg:col-span-4 bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-wider block">1. SELECT DEMO ROLE</span>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => { setDemoRole("citizen"); setDemoStatus("idle"); }}
+                    className={`w-full text-left p-3.5 rounded-xs border text-xs font-mono transition-colors flex justify-between items-center cursor-pointer ${
+                      demoRole === "citizen" ? "bg-[#0B111E] border-[#C5A880] text-[#E2E8F0]" : "border-[#2D3A4E]/60 text-[#94A3B8] hover:border-[#2D3A4E]"
+                    }`}
+                  >
+                    <span>Public Citizen (Community)</span>
+                    <span>→</span>
+                  </button>
+                  <button 
+                    onClick={() => { setDemoRole("government"); setDemoStatus("idle"); }}
+                    className={`w-full text-left p-3.5 rounded-xs border text-xs font-mono transition-colors flex justify-between items-center cursor-pointer ${
+                      demoRole === "government" ? "bg-[#0B111E] border-[#C5A880] text-[#E2E8F0]" : "border-[#2D3A4E]/60 text-[#94A3B8] hover:border-[#2D3A4E]"
+                    }`}
+                  >
+                    <span>Government Decision Maker</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+
+              {demoRole === "citizen" ? (
+                <div className="space-y-4">
+                  <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-wider block">2. SELECT WARNING PHOTO</span>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: "img1", label: "Flood Basin", url: "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=200" },
+                      { id: "img2", label: "Fallen Tree", url: "https://images.unsplash.com/photo-1518391846015-55a9cc003b25?w=200" },
+                      { id: "img3", label: "Blocked road", url: "https://images.unsplash.com/photo-1508873696983-2df519f0397e?w=200" },
+                    ].map((img) => (
+                      <button
+                        key={img.id}
+                        onClick={() => handleDemoImageSelect(img.url)}
+                        className={`h-16 border rounded-xs overflow-hidden bg-cover bg-center transition-all cursor-pointer ${
+                          demoImage === img.url ? "border-[#C5A880] scale-95" : "border-[#2D3A4E]/80 opacity-60"
+                        }`}
+                        style={{ backgroundImage: `url(${img.url})` }}
+                        title={img.label}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-2 text-xs text-[#94A3B8] bg-[#0B111E] p-4 rounded-xs border border-[#2E3A4E]/60">
+                  <span className="font-mono text-[9px] text-[#C5A880] uppercase block mb-1">CONSEQUENCE SIMULATOR PARAMETER</span>
+                  Evacuation delay simulated at **24 Hours Watch** stage. Click trigger to query vulnerability curves and generate briefings.
+                </div>
+              )}
+
+              <button
+                onClick={handleTriggerDemo}
+                className="w-full bg-[#C5A880] hover:bg-[#D4B992] text-[#0B111E] text-xs font-mono font-bold uppercase tracking-wider py-3.5 rounded-xs transition-colors cursor-pointer"
+              >
+                {demoStatus === "loading" ? "Processing Simulation..." : "Trigger AI Synthesis"}
+              </button>
+            </div>
+
+            {/* Right Screen Output */}
+            <div className="lg:col-span-8 bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs flex flex-col justify-between">
+              <div className="border-b border-[#2E3A4E]/60 pb-3 flex justify-between items-center">
+                <span className="text-[10px] font-mono text-[#94A3B8] uppercase">SIMULATED TERMINAL OUTPUT</span>
+                <span className="text-[9px] font-mono text-[#2E7D5B] bg-[#2E7D5B]/10 px-2 py-0.5 rounded-xs">Grounded in RAG</span>
+              </div>
+
+              <div className="flex-1 py-8 flex flex-col items-center justify-center text-center">
+                {demoStatus === "idle" && (
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono text-[#64748B] block">Waiting for trigger input...</span>
+                    <p className="text-[11px] text-[#64748B] max-w-sm">Configure parameters and click 'Trigger AI Synthesis' to run mock response loops.</p>
+                  </div>
+                )}
+
+                {demoStatus === "loading" && (
+                  <div className="space-y-3">
+                    <span className="h-6 w-6 rounded-full border-2 border-[#C5A880] border-t-transparent animate-spin block mx-auto" />
+                    <span className="text-xs font-mono text-[#94A3B8]">ActionLens AI consulting policies & verifying spatial weights...</span>
+                  </div>
+                )}
+
+                {demoStatus === "resolved" && demoRole === "citizen" && (
+                  <div className="w-full text-left space-y-4 font-sans text-xs">
+                    <div className="p-3 bg-[#2E7D5B]/15 border border-[#2E7D5B]/40 rounded-xs flex items-center justify-between text-[11px]">
+                      <span className="text-[#2E7D5B] font-mono font-bold">✓ VISION AI VERIFIED</span>
+                      <span className="text-[#94A3B8] font-mono">Confidence: 96%</span>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="font-mono text-[9px] text-[#94A3B8] uppercase">Detected Objects</span>
+                      <div className="flex gap-2">
+                        <span className="bg-[#0B111E] border border-[#2E3A4E] px-2 py-0.5 text-[10px] rounded-xs font-mono">Water Accumulation</span>
+                        <span className="bg-[#0B111E] border border-[#2E3A4E] px-2 py-0.5 text-[10px] rounded-xs font-mono">Flooded Roadway</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="font-mono text-[9px] text-[#94A3B8] uppercase">AI Action Directive</span>
+                      <p className="text-[#E2E8F0] leading-relaxed">
+                        "Flooding detected blocking bypass corridor. Power down ground circuits and proceed immediately to high-elevation Garsen Relief Shelter."
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {demoStatus === "resolved" && demoRole === "government" && (
+                  <div className="w-full text-left space-y-4 font-sans text-xs">
+                    <div className="p-3 bg-[#C1622E]/15 border border-[#C1622E]/40 rounded-xs flex items-center justify-between text-[11px]">
+                      <span className="text-[#C1622E] font-mono font-bold">⚠️ EXPOSURE FORECAST (24H DELAY)</span>
+                      <span className="text-[#94A3B8] font-mono">Loss Index: High</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Projected Casualties</span>
+                        <span className="text-lg font-mono font-bold text-[#EF4444] mt-0.5 block">4,400 People</span>
+                      </div>
+                      <div>
+                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Projected Economic Loss</span>
+                        <span className="text-lg font-mono font-bold text-[#E2E8F0] mt-0.5 block">$696,000 USD</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="font-mono text-[9px] text-[#94A3B8] uppercase">Policy Instruction Summary</span>
+                      <p className="text-[#E2E8F0] leading-relaxed">
+                        "Hydro-sensor alerts show Garsen River at 8.4m. Authorize Level-2 emergency funding to dispatch bus evacuation lines before levee wall fracture at 03:00 UTC."
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-[#2E3A4E]/60 pt-3 text-center">
+                <span className="text-[10px] text-[#94A3B8] font-mono">
+                  Create a profile account to test the fully functional interactive dashboard.
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 5: DEDICATED AI FEATURES GRID ── */}
+      <section className="py-16 sm:py-24 bg-[#0B111E] border-b border-[#2E3A4E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">AI Competency Suite</span>
+            <h2 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
+              Unified Climate AI Microservices
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8]">
+              We integrate four specialized AI pipelines contextually inside dashboard views rather than isolated tabs.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+            {[
+              {
+                title: "RAG Policy Assistant",
+                icon: Shield,
+                desc: "Consults thousands of pages of disaster mitigation SOPs, WHO health directives, and NDMA operational policies using pgvector similarity query."
+              },
+              {
+                title: "Vision AI Verification",
+                icon: Sparkles,
+                desc: "Analyzes citizen disaster photos instantly, verifying threat signatures (water depth, fire vectors) and filtering spoof reports to prevent panic."
+              },
+              {
+                title: "Impact Consequence Simulator",
+                icon: BarChart3,
+                desc: "Models population displacement curves and agricultural assets at risk in response to alert propagation delay coordinates."
+              },
+              {
+                title: "Situation Executive Briefings",
+                icon: Landmark,
+                desc: "Compiles disparate sensor telemetry, hydrology metrics, and crowd reports into structured text briefings ready for cabinet decision-makers."
+              }
+            ].map((feat, idx) => {
+              const Icon = feat.icon;
+              return (
+                <div key={idx} className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
+                  <div className="h-10 w-10 bg-[#C5A880]/10 border border-[#C5A880]/30 rounded-xs flex items-center justify-center text-[#C5A880]">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-editorial text-lg text-[#E2E8F0] font-semibold">{feat.title}</h3>
+                  <p className="text-xs text-[#94A3B8] leading-relaxed">{feat.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 6: HOW IT WORKS (THE CORE LOOP) ── */}
       <section className="py-16 sm:py-24 bg-[#111827] border-b border-[#2E3A4E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-12 sm:space-y-16">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
@@ -218,7 +486,7 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 4: VULNERABILITY INDEXING & SIMULATOR ── */}
+      {/* ── SECTION 7: PRE-DISASTER CONSEQUENCE SIMULATOR ── */}
       <section className="py-16 sm:py-24 bg-[#0B111E] border-b border-[#2E3A4E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
@@ -228,7 +496,7 @@ export default function MarketingLandingPage() {
               Pre-Disaster Consequence Simulator
             </h2>
             <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-              ActionLens introduces predictive risk simulation modeling. Operational managers can slide evacuation notification timelines (from immediate alert to 72-hour delay) to view projected casualties, displacement, and financial losses dynamically. 
+              ActionLens introduces predictive risk simulation modeling. Evacuation delay timelines calculate projected casualties and asset damages dynamically.
             </p>
             
             <div className="space-y-4">
@@ -283,26 +551,26 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 5: THE SIX STAKEHOLDER ECOSYSTEM ── */}
+      {/* ── SECTION 8: THE STAKEHOLDER ECOSYSTEM ── */}
       <section className="py-16 sm:py-24 bg-[#111827] border-b border-[#2E3A4E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10 sm:space-y-12">
           
           <div className="max-w-2xl space-y-3">
             <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">User Segmentation</span>
             <h2 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
-              Six Perspectives. One Unified Response.
+              Five Perspectives. One Unified Response.
             </h2>
             <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-              We divide information based on operational capabilities. When you create an account, you select your role to receive matching checklists:
+              We divide information based on operational capabilities. Select your role to access custom dashboards:
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { 
-                role: "Government Official", 
+                role: "Government Leader", 
                 icon: Landmark, 
-                desc: "Authorize emergency funding, declare disaster zones, and coordinate high-level evacuation policies across counties." 
+                desc: "Authorize emergency funding, declare disaster zones, and coordinate high-level evacuation policies across regions." 
               },
               { 
                 role: "NGO Humanitarian Lead", 
@@ -315,19 +583,14 @@ export default function MarketingLandingPage() {
                 desc: "Execute search & rescue operations, secure communication grids, and manage medical field triage camps." 
               },
               { 
-                role: "Agro-Agent / Farmer", 
-                icon: Sprout, 
-                desc: "Evacuate livestock along forecasted flood plains, secure seed storage, and schedule harvest windows." 
-              },
-              { 
-                role: "Public Health Lead", 
-                icon: HeartPulse, 
-                desc: "Monitor post-disaster vector epidemics, deploy cholera vaccines, and distribute hygiene supplies." 
-              },
-              { 
                 role: "Citizen / Resident", 
                 icon: Users, 
                 desc: "Access localized safety maps, receive urgent notifications, and submit field reports (geotagged reports)." 
+              },
+              { 
+                role: "System Administrator", 
+                icon: Cpu, 
+                desc: "Configure system system prompts, monitor token usage rates, and oversee database backup nodes." 
               }
             ].map((item, idx) => {
               const IconComp = item.icon;
@@ -346,7 +609,56 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 6: SYSTEM INTEGRITY & ARCHITECTURE ── */}
+      {/* ── SECTION 9: GLOBAL COVERAGE & TESTIMONIALS ── */}
+      <section className="py-16 sm:py-24 bg-[#0B111E] border-b border-[#2E3A4E]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          
+          <div className="space-y-6">
+            <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">Regional Reach</span>
+            <h2 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
+              Defending the Horn of Africa
+            </h2>
+            <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
+              ActionLens AI aggregates environmental reports across vulnerable sub-Saharan corridors, providing disaster protection matrices to farming communities and city councils alike.
+            </p>
+
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#2E3A4E]/60 text-xs font-mono text-[#E2E8F0]">
+              <div>
+                <span className="text-[9px] text-[#94A3B8] uppercase block">Member States</span>
+                <span className="text-xl font-bold mt-1 block">8 IGAD</span>
+              </div>
+              <div>
+                <span className="text-[9px] text-[#94A3B8] uppercase block">Responders Synced</span>
+                <span className="text-xl font-bold mt-1 block">15 Teams</span>
+              </div>
+              <div>
+                <span className="text-[9px] text-[#94A3B8] uppercase block">Average uptime</span>
+                <span className="text-xl font-bold mt-1 block">99.98%</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial slider layout */}
+          <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 sm:p-8 rounded-xs space-y-4 shadow-lg">
+            <div className="flex gap-1 text-[#C5A880]">
+              {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}
+            </div>
+            <p className="font-editorial text-base text-[#E2E8F0] italic leading-relaxed">
+              "We slashed our response dispatch mobilization timelines from 3 hours to less than 18 minutes by having verified citizen image telemetry feeding directly into our AI dispatcher."
+            </p>
+            <div className="flex justify-between items-center text-xs pt-4 border-t border-[#2E3A4E]/60">
+              <div>
+                <span className="font-bold text-[#E2E8F0] block">Director Ibrahim Yusuf</span>
+                <span className="text-[#94A3B8] font-mono text-[10px]">National Disaster Management Agency</span>
+              </div>
+              <span className="text-[9px] font-mono text-[#C5A880] uppercase tracking-wider bg-[#C5A880]/10 px-2.5 py-1 rounded-xs">Verified Partner</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── SECTION 10: SYSTEM INTEGRITY & ARCHITECTURE ── */}
       <section className="py-16 sm:py-24 bg-[#0B111E] border-b border-[#2E3A4E]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
@@ -356,7 +668,7 @@ export default function MarketingLandingPage() {
               Built for high-stakes, low-bandwidth operational environments
             </h2>
             <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-              When disaster strikes, communications and power systems fail. ActionLens AI is engineered to operate under constrained environments, prioritizing minimal data payloads, lightning-fast GIS indexing, and instant database alerts.
+              ActionLens AI is engineered to operate under constrained environments, prioritizing minimal data payloads, lightning-fast GIS indexing, and instant database alerts.
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -424,7 +736,40 @@ export default function MarketingLandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 7: EDITORIAL CALL TO ACTION ── */}
+      {/* ── SECTION 11: FAQ INTERACTIVE ACCORDION ── */}
+      <section className="py-16 sm:py-24 bg-[#111827] border-b border-[#2E3A4E]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 space-y-12">
+          <div className="text-center space-y-3">
+            <span className="text-xs font-mono text-[#C5A880] uppercase tracking-widest font-bold">FAQS</span>
+            <h2 className="font-editorial text-2xl sm:text-4xl text-[#E2E8F0]">
+              Operational Inquiries
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqItems.map((faq, idx) => (
+              <div key={idx} className="bg-[#151D2A] border border-[#2E3A4E] rounded-xs overflow-hidden">
+                <button
+                  onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                  className="w-full flex justify-between items-center p-5 text-left text-xs sm:text-sm font-sans font-medium text-[#E2E8F0] hover:text-[#C5A880] transition-colors cursor-pointer"
+                >
+                  <span>{faq.q}</span>
+                  <ChevronDown className={`h-4 w-4 text-[#94A3B8] transition-transform duration-300 ${
+                    expandedFaq === idx ? "rotate-180" : ""
+                  }`} />
+                </button>
+                {expandedFaq === idx && (
+                  <div className="px-5 pb-5 pt-1 text-xs text-[#94A3B8] leading-relaxed border-t border-[#2E3A4E]/30 font-sans">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SECTION 12: EDITORIAL CALL TO ACTION ── */}
       <section className="py-16 sm:py-24 bg-[#111827] text-center border-b border-[#2E3A4E] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,#1C2638_0%,#111827_70%)] pointer-events-none" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 space-y-6 sm:space-y-8 relative z-10">

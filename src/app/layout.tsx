@@ -34,6 +34,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "ActionLens AI" }],
   creator: "ActionLens AI",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/icon.png",
+  },
 };
 
 export const viewport: Viewport = {
