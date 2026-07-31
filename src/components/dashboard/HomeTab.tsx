@@ -38,13 +38,13 @@ export default function HomeTab({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-[#2E3A4E] pb-6 gap-4">
         <div>
           <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-            Operational Dashboard • Phase 2 Verified
+            Operations Center • Phase 2 Verified
           </span>
           <h1 className="font-editorial text-2xl sm:text-4xl font-normal text-[#E2E8F0] tracking-tight mt-1">
             Welcome, <span className="text-[#C5A880] font-semibold">{userName}</span>
           </h1>
           <p className="text-xs text-[#94A3B8] font-mono mt-1 uppercase tracking-wider">
-            Role Profile: {role === "admin" ? "System Administrator" : role === "government" ? "Government Decision Maker" : role === "responder" ? "Emergency Responder" : role === "ngo" ? "Humanitarian Organization" : "Public Citizen"} • {region}, {country}
+            Role Profile: {role === "admin" ? "Disaster Operations Center" : role === "government" ? "Government Agency" : role === "responder" ? "Emergency Responder" : role === "ngo" ? "Humanitarian Organization" : "Community Profile"} • {region}, {country}
           </p>
         </div>
         <div className="bg-[#151D2A] border border-[#2E3A4E] py-2.5 px-4 rounded-xs text-right shrink-0">
@@ -62,13 +62,13 @@ export default function HomeTab({
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#C5A880]/5 rounded-full blur-2xl pointer-events-none" />
               <div className="flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full bg-[#EF4444] animate-pulse" />
-                <span className="text-[9px] font-mono text-[#EF4444] uppercase tracking-widest font-bold">Active Regional Hazard</span>
+                <span className="text-[9px] font-mono text-[#EF4444] uppercase tracking-widest font-bold">Active ICPAC Hazard Watch Alert</span>
               </div>
               <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-2 font-medium">
-                Garsen Basin Flooding Risk
+                Tana River Flood Warning
               </h2>
               <p className="text-xs text-[#94A3B8] leading-relaxed mt-2 max-w-2xl font-sans">
-                River Tana discharge rate continues to hover at 8.4m, breaching safety embankments. Citizen reports verify localized crop inundation. Please check safe routing.
+                River Tana discharge rate continues to hover at 8.4m, breaching safety embankments. Ground reports verify localized crop inundation. Please check safe routing.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-4">
@@ -76,13 +76,13 @@ export default function HomeTab({
                   onClick={() => onNavigate("community")}
                   className="bg-[#C5A880] hover:bg-[#D4B992] text-[#0B111E] text-[10px] font-bold uppercase tracking-widest py-3 px-6 rounded-xs transition-all cursor-pointer font-mono"
                 >
-                  Quick Report Hazard
+                  Submit Ground Report
                 </button>
                 <button 
                   onClick={() => onNavigate("map")}
                   className="border border-[#2E3A4E] hover:border-[#C5A880]/60 text-[#E2E8F0] text-[10px] font-bold uppercase tracking-widest py-3 px-6 rounded-xs transition-all bg-[#0B111E]/40 cursor-pointer font-mono"
                 >
-                  View Evacuation Map
+                  View Operations Map
                 </button>
               </div>
             </div>
@@ -126,7 +126,7 @@ export default function HomeTab({
           {/* Citizen Contacts & AI recommendation */}
           <div className="md:col-span-4 space-y-6">
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
-              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">AI Safety Directive</h3>
+              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">AI Priority Actions</h3>
               <div className="bg-[#0B111E] border border-[#2E3A4E] p-4 rounded-xs text-[11px] font-sans leading-relaxed text-[#E2E8F0]">
                 "Hydrology models confirm flood crest arrival at 03:00 UTC. If residing in Sector B floodplains, power down all ground circuits, pack primary medical files, and proceed immediately to the Wadata Relief Hub."
               </div>
@@ -162,7 +162,7 @@ export default function HomeTab({
           <div className="md:col-span-8 space-y-6">
             <div className="grid grid-cols-3 gap-4">
               <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs">
-                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">ACTIVE INCIDENTS</span>
+                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">ACTIVE HAZARD EVENTS</span>
                 <span className="text-2xl font-mono font-bold text-[#E2E8F0] mt-1 block">14</span>
               </div>
               <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs">
@@ -177,15 +177,15 @@ export default function HomeTab({
 
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
               <div className="flex justify-between items-center border-b border-[#2E3A4E]/60 pb-3">
-                <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Recent Dispatch Alerts</h3>
+                <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Recent Early Warning Dispatches</h3>
                 <span className="text-[9px] font-mono text-[#94A3B8]">Updated 1m ago</span>
               </div>
 
               <div className="space-y-3.5">
                 {[
-                  { id: "inc_1", desc: "Flood evacuation call: 4 stranded vehicles near Garsen basin", severity: "CRITICAL", time: "5 mins ago", squad: "Rescue Crew Alpha" },
-                  { id: "inc_2", desc: "Wildfire brush breach: approaching dry forest near Table Mountain East", severity: "HIGH", time: "18 mins ago", squad: "Fire Squad B" },
-                  { id: "inc_3", desc: "Dam spillway leak watch: Kano Tiga reservoir flow monitoring", severity: "MODERATE", time: "1 hour ago", squad: "Standby Monitor" },
+                  { id: "inc_1", desc: "Tana River Flood Warning: 4 stranded vehicles near Garsen basin", severity: "CRITICAL", time: "5 mins ago", squad: "Rescue Crew Alpha" },
+                  { id: "inc_2", desc: "Maiduguri River Overflow: approaching critical residential sectors", severity: "HIGH", time: "18 mins ago", squad: "Fire Squad B" },
+                  { id: "inc_3", desc: "Kampala Landslide Alert: local sensor threshold breach", severity: "MODERATE", time: "1 hour ago", squad: "Standby Monitor" },
                 ].map((inc) => (
                   <div key={inc.id} className="bg-[#0B111E] border border-[#2E3A4E] p-4 rounded-xs flex justify-between items-start gap-4">
                     <div className="space-y-1">
@@ -203,7 +203,7 @@ export default function HomeTab({
                         onClick={() => onNavigate("map")} 
                         className="text-[9px] font-mono text-[#94A3B8] hover:text-[#C5A880] underline block mt-1 cursor-pointer"
                       >
-                        Locate Incident
+                        Locate Hazard Event
                       </button>
                     </div>
                   </div>
@@ -237,7 +237,7 @@ export default function HomeTab({
             </div>
 
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-3">
-              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Tactical Action Checklists</h3>
+              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Priority Actions Checklist</h3>
               <ul className="space-y-2 text-[11px] font-sans text-[#94A3B8] list-disc list-inside">
                 <li>Deploy drone telemetry scans over basin coordinates</li>
                 <li>Audit boat reserve gas supply levels</li>
@@ -258,17 +258,17 @@ export default function HomeTab({
                 <span className="text-2xl font-mono font-bold text-[#C5A880] mt-1 block">88.4%</span>
               </div>
               <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs">
-                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">ACTIVE ALERTS</span>
+                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">ACTIVE EARLY WARNINGS</span>
                 <span className="text-2xl font-mono font-bold text-[#E2E8F0] mt-1 block">8</span>
               </div>
               <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs">
-                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">EXPOSURE ESTIMATE</span>
-                <span className="text-2xl font-mono font-bold text-[#EF4444] mt-1 block">42,380 Citizens</span>
+                <span className="text-[9px] font-mono text-[#94A3B8] uppercase block">ANTICIPATORY EXPOSURE FORECAST</span>
+                <span className="text-xl font-mono font-bold text-[#EF4444] mt-1 block">42,380 Communities</span>
               </div>
             </div>
 
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
-              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Executive Situation Briefing</h3>
+              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Situation Overview Briefing</h3>
               <p className="text-xs text-[#94A3B8] leading-relaxed font-sans">
                 Flooding across the coastal lagoons of the Tana River has breached the 8.4m mark. Current consequence simulations forecast a potential casualty baseline of 4,400 lives and crop capital damage totaling $696,000 USD if evacuations are delayed past the 24-hour mark. Emergency funding remains on reserve.
               </p>
@@ -296,14 +296,14 @@ export default function HomeTab({
           {/* Government Threats Overview */}
           <div className="md:col-span-4 space-y-6">
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
-              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Policy & Recommendations</h3>
+              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Priority Actions</h3>
               <div className="space-y-3">
                 <div className="bg-[#0B111E] p-3 border border-[#2E3A4E] rounded-xs text-[11px] font-sans">
-                  <span className="text-[#C5A880] font-bold uppercase block font-mono text-[9px] mb-1">MITIGATION ACTION</span>
+                  <span className="text-[#C5A880] font-bold uppercase block font-mono text-[9px] mb-1">ANTICIPATORY ACTION</span>
                   Authorize instant budget dispatch of Level-2 EOC funds for Garissa sandbagging and bus corridors.
                 </div>
                 <div className="bg-[#0B111E] p-3 border border-[#2E3A4E] rounded-xs text-[11px] font-sans">
-                  <span className="text-[#C5A880] font-bold uppercase block font-mono text-[9px] mb-1">CIVIC INSTRUCTIONS</span>
+                  <span className="text-[#C5A880] font-bold uppercase block font-mono text-[9px] mb-1">EARLY WARNING PROTOCOLS</span>
                   Publish localized broadcast guidelines regarding high ground assembly coordinates.
                 </div>
               </div>
@@ -333,7 +333,7 @@ export default function HomeTab({
 
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-6 rounded-xs space-y-4">
               <div className="flex justify-between items-center border-b border-[#2E3A4E]/60 pb-3">
-                <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Active Shelters Operations</h3>
+                <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Active Response Centers Operations</h3>
                 <span className="text-[9px] font-mono text-[#94A3B8]">Capacity Track</span>
               </div>
 
@@ -361,7 +361,7 @@ export default function HomeTab({
           {/* Humanitarian Coordination */}
           <div className="md:col-span-4 space-y-6">
             <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
-              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Needs Assessment Log</h3>
+              <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Response Resources Log</h3>
               <div className="space-y-3 text-[11px] font-sans text-[#94A3B8]">
                 <div className="bg-[#0B111E] p-3 border border-[#2E3A4E] rounded-xs">
                   <span className="font-bold text-[#E2E8F0] block mb-1">Makurdi Hub Food Ration Supply</span>

@@ -83,7 +83,7 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
           body: JSON.stringify({
             image_base64: base64Data,
             category: category,
-            description: description || "Citizen hazard upload",
+            description: description || "Ground report upload",
           }),
         });
 
@@ -142,7 +142,7 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
         category: category,
         severity: severity as any,
         status: aiAnalysis?.verified ? ("verified" as const) : ("pending" as const),
-        reporter_name: isAnonymous ? "Anonymous Citizen" : "Local Resident",
+        reporter_name: isAnonymous ? "Anonymous Community Member" : "Community Member",
         reporter_role: "Community Member",
         created_at: "Just now",
         ai_verified: aiAnalysis ? aiAnalysis.verified : false,
@@ -208,13 +208,13 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
       {/* Header */}
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          Citizen Reporting Portal • Vision Verified
+          Ground Reporting Portal • AI Verification
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Community Hazard Reports
+          Ground Reports Registry
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
-          Upload active threat photos or report localized flooding, fires, or blockages.
+          Upload active hazard photos to verify localized flooding, dryland fires, or route blockages.
         </p>
       </div>
 
@@ -223,12 +223,12 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
         {/* SUBMIT REPORT FORM */}
         <div className="lg:col-span-5 bg-[#151D2A] border border-[#2E3A4E] p-5 sm:p-6 rounded-xs space-y-5">
           <div className="border-b border-[#2E3A4E]/60 pb-3">
-            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Report New Hazard</h3>
+            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Submit Ground Report</h3>
           </div>
 
           <form onSubmit={handleSubmitReport} className="space-y-4 text-xs font-sans">
             <div className="space-y-1.5">
-              <label className="block font-mono text-[#94A3B8] uppercase text-[9px]">Description of Danger</label>
+              <label className="block font-mono text-[#94A3B8] uppercase text-[9px]">Ground Observation / Description</label>
               <textarea 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -375,7 +375,7 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
               disabled={isSubmitting || isAnalyzing}
               className="w-full bg-[#C5A880] hover:bg-[#D4B992] text-[#0B111E] text-[10px] font-bold uppercase tracking-widest py-3.5 rounded-xs flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50 font-mono"
             >
-              <span>{isSubmitting ? "Submitting Report..." : "Transmit Hazard Report"}</span>
+              <span>{isSubmitting ? "Submitting Report..." : "Transmit Ground Report"}</span>
               <Send className="h-3.5 w-3.5" />
             </button>
           </form>
@@ -384,7 +384,7 @@ export default function CommunityTab({ role, region = "Tana River", country = "K
         {/* COMMUNITY REPORTS FEED */}
         <div className="lg:col-span-7 space-y-5">
           <div className="flex justify-between items-center border-b border-[#2E3A4E]/60 pb-3">
-            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Active Community Feed</h3>
+            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Active Ground Reports Feed</h3>
             <span className="text-[9px] font-mono text-[#94A3B8]">{feed.length} Active Records</span>
           </div>
 

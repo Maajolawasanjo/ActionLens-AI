@@ -39,10 +39,10 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
       {/* Header */}
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          Operational Intelligence Hub
+          Preparedness Assessment Center
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Predictive Analytics & Consequence Simulator
+          Anticipatory Risk & Impact Forecast
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
           Audit regional warning trends, response times, and model future damage matrices.
@@ -53,7 +53,7 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
       <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 sm:p-6 rounded-xs space-y-5">
         <div className="flex justify-between items-center border-b border-[#2E3A4E]/60 pb-3">
           <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold flex items-center gap-1.5">
-            <Activity className="h-4 w-4 text-[#C5A880]" /> Pre-Disaster Consequence Simulator
+            <Activity className="h-4 w-4 text-[#C5A880]" /> Anticipatory Action Delay Simulator
           </h3>
           <span className="text-[9px] font-mono text-[#94A3B8] uppercase">Scope: Horn of Africa Corridor</span>
         </div>
@@ -100,7 +100,7 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
               </span>
             </div>
             <div className="col-span-2 pt-2 border-t border-[#2E3A4E]/60 text-[9px] font-mono text-[#94A3B8]">
-              ⚠️ Calculations grounded in RAG policy buffers and historical NiMet records.
+              ⚠️ Calculations grounded in RAG policy buffers and historical ICPAC/NiMet records.
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
         
         {/* MONTHLY TRENDS */}
         <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
-          <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Monthly Alerts & Accuracy Trends</h3>
+          <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Monthly Early Warnings & Accuracy Trends</h3>
           <div className="h-64 w-full">
             {isMounted ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -138,7 +138,7 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
 
         {/* THREAT DISTRIBUTION */}
         <div className="bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
-          <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Threat Type Distribution</h3>
+          <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Hazard Event Distribution</h3>
           <div className="h-64 w-full">
             {isMounted ? (
               <ResponsiveContainer width="100%" height="100%">
@@ -161,10 +161,10 @@ export default function AnalyticsTab({ role }: AnalyticsTabProps) {
       {/* CORE STATS GRID */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: "Communities protected", value: "42,380+" },
-          { label: "AI Recommendations", value: "2,436 Logs" },
-          { label: "Community Reports", value: "814 Submits" },
-          { label: "Warning precision", value: "94.6%" },
+          { label: "Communities Protected", value: "42,380+" },
+          { label: "AI Priority Actions", value: "2,436 Logs" },
+          { label: "Ground Reports", value: "814 Submits" },
+          { label: "Warning Precision", value: "94.6%" },
         ].map((s, idx) => (
           <div key={idx} className="bg-[#151D2A] border border-[#2E3A4E] p-4 rounded-xs">
             <span className="text-[8px] font-mono text-[#94A3B8] uppercase block tracking-wider">{s.label}</span>

@@ -6,7 +6,7 @@ Project Name:
 ActionLens AI
 
 Tagline:
-IGAD Decision Intelligence Platform for Early Warning & Climate Resilience
+ICPAC-Aligned Early Warning & Anticipatory Action Platform for Climate Resilience in East Africa
 
 Team:
 ActionLens AI Core Team
@@ -24,29 +24,29 @@ Demo Video:
 
 ## Project Overview
 
-ActionLens AI is a decision intelligence platform designed to translate raw environmental telemetry and climate data into role-specific, actionable directives for stakeholders in the East Africa IGAD sub-region. The Horn of Africa faces frequent, severe climate events such as flash floods, landslides, and droughts. While regional early warning systems exist, they typically generate broad warnings that fail to guide local actions. This results in "action paralysis," where local communities and response agencies receive alerts but lack the concrete instructions needed to coordinate effectively. This gap frequently leads to avoidable losses of lives and agricultural capital.
+ActionLens AI is an AI-powered Early Warning & Anticipatory Action Platform designed to translate raw environmental telemetry and climate data into role-specific, actionable directives for stakeholders in the East Africa IGAD sub-region. The Horn of Africa faces frequent, severe climate events such as flash floods, landslides, and droughts. While regional early warning systems exist, they typically generate broad warnings that fail to guide local actions. This results in "action paralysis," where local communities and response agencies receive alerts but lack the concrete instructions needed to coordinate effectively. This gap frequently leads to avoidable losses of lives and agricultural capital.
 
-ActionLens AI addresses this by providing tailor-made guidance checklists to citizens, first responders, NGOs, government officials, and health workers. By converting weather telemetry, flood reports, satellite observations, and community submissions into operational decisions tailored to each stakeholder, the platform reduces decision time by transforming early warnings into role-specific action plans within seconds.
+ActionLens AI addresses this by providing tailor-made guidance checklists to local communities, emergency responders, humanitarian organizations, and government agencies. By converting weather telemetry, hazard reports, satellite observations, and verified ground reports into operational decisions tailored to each stakeholder, the platform reduces decision time by transforming early warnings into role-specific anticipatory action plans within seconds.
 
 ---
 
 ## Solution Details
 
-The platform ingests real-time telemetry from environmental sensors and crowd-sourced hazard reports. Upon onboarding, users complete a profile establishing their role and region to receive a personalized dashboard interface. Citizens can report local incidents, upload geo-tagged photos, and receive immediate safety instructions. Responders access real-time dispatch timelines and incident locations, while government officials view regional analytics and coordinate funding.
+The platform ingests real-time telemetry from environmental sensors and crowd-sourced ground reports. Upon onboarding, users complete a profile establishing their role and region to receive a personalized dashboard interface. Users can submit ground reports, upload geo-tagged photos, and receive immediate safety instructions. Responders access real-time early warning operations controls and hazard locations, while government officials view regional analytics and coordinate funding.
 
-ActionLens AI relies on OpenAI APIs for three core capabilities: GPT-4o for structured emergency decision generation, GPT-4o Vision for validating community-submitted disaster images, and text-embedding-3-small for semantic retrieval of disaster policies through a RAG pipeline.
+ActionLens AI relies on OpenAI APIs for three core capabilities: GPT-4o for structured anticipatory action decision generation, GPT-4o Vision for validating ground-submitted hazard images, and text-embedding-3-small for semantic retrieval of preparedness policies through a RAG pipeline.
 
-Unlike existing platforms that broadcast generic alerts, ActionLens AI isolates responsibilities by stakeholder role. This ensures that every actor—from a farmer safeguarding grain stores to a state administrator releasing disaster response funds—receives a customized, actionable checklist rather than a generic weather warning.
+Unlike existing platforms that broadcast generic alerts, ActionLens AI isolates responsibilities by stakeholder role. This ensures that every actor—from a farmer safeguarding grain stores to a state administrator releasing anticipatory response funds—receives a customized, actionable checklist rather than a generic weather warning.
 
 ---
 
 ## Why ActionLens AI is Different
 
 * **Role-Specific Checklists Instead of Generic Alerts**: Translates broad regional warnings into concrete tasks for specific actors, preventing action paralysis.
-* **AI-Verified Citizen Science**: Uses multi-modal vision to filter out false or low-quality hazard reports before dispatcher review.
-* **Grounded Retrieval-Augmented Generation**: Answers policy and SOP questions by searching regional guidelines (using text-embedding-3-small in pgvector) instead of generating hallucinations.
+* **AI-Verified Ground Reports**: Uses multi-modal vision to filter out false or low-quality hazard reports before dispatcher review.
+* **Grounded Retrieval-Augmented Generation**: Answers preparedness policy and SOP questions by searching regional guidelines (using text-embedding-3-small in pgvector) instead of generating hallucinations.
 * **Multi-Stakeholder Collaboration**: Synchronizes real-time logistical state between citizens, first responders, NGOs, and state officials.
-* **Real-Time Map Synchronization**: Feeds live crowdsourced reports to a shared geospatial map via WebSockets immediately.
+* **Real-Time Map Synchronization**: Feeds live crowdsourced ground reports to a shared geospatial map via WebSockets immediately.
 * **Global-Ready Resilient Architecture**: Decouples Next.js frontend, Supabase database, and FastAPI microservice layers to scale under emergency workloads.
 
 ---
@@ -76,31 +76,31 @@ Unlike existing platforms that broadcast generic alerts, ActionLens AI isolates 
 
 ### Core Winning Features
 
-* **AI Recommendations**: Instantly generates localized action checklists customized by user role and region, reducing response delay from hours to seconds.
-* **Vision AI Verification**: Multi-modal image analysis validating physical reports in real time to filter noise and prevent false alarms.
-* **Community Reports**: Geotagged hazard reports submitted by citizens, facilitating local-to-regional disaster logging.
-* **Interactive Disaster Map**: Visualizes regional alerts, verified community hazards, shelters, and hospital capacities.
-* **RAG Emergency Assistant**: Conversational assistant answering protocol questions grounded in NDMA and ICPAC SOPs with document citations.
+* **AI Recommendations**: Instantly generates localized anticipatory action checklists customized by user role and region, reducing response delay from hours to seconds.
+* **Vision AI Verification**: Multi-modal image analysis validating Ground Reports in real time to filter noise and prevent false alarms.
+* **Ground Reports Registry**: Geotagged hazard reports submitted by citizens, facilitating local-to-regional disaster logging.
+* **Interactive early warning Map**: Visualizes regional alerts, verified ground reports, shelters, and hospital capacities.
+* **RAG Early Warning Assistant**: Conversational assistant answering protocol questions grounded in NDMA and ICPAC SOPs with document citations.
 
 ### Supporting Platform Capabilities
 
 * **Role-Based Dashboards**: Isolated interfaces for Citizens, Responders, NGOs, Governments, and Administrators.
 * **Real-Time Data Feeds**: Dynamic WebSocket synchronization updating map overlays and notifications without reloads.
-* **Impact Consequence Simulator**: Displays estimated displacement numbers and infrastructure threat vectors depending on evacuation delay.
+* **Anticipatory Risk & Impact Forecast**: Displays estimated displacement numbers and infrastructure threat vectors depending on evacuation delay.
 * **Admin Control Panel**: Back-office suite managing system prompt templates, indexing RAG documents, and tracking API cost metrics.
 
 ---
 
 ## User Roles
 
-### Citizen
-Focuses on local safety. Receives immediate weather updates, routes safe evacuation corridors, downloads survival checksheets, and reports local dangers with photographic attachments.
+### Citizen (Ground Reporter)
+Focuses on local safety. Receives immediate early warning advisories, routes safe evacuation corridors, downloads safety checksheets, and reports local dangers with photographic attachments.
 
 ### Emergency Responder
-Acts as the field crew. Monitors active incidents, reviews GPS coordinates, updates team deployment states, and uses dispatch checklists.
+Acts as the field crew. Monitors active hazard events, reviews GPS coordinates, updates team deployment states, and uses dispatch checklists.
 
 ### Government
-Maintains high-level oversight. Inspects regional analytics, views consequence estimations, exports situation reports, and authorizes disaster budgets.
+Maintains high-level oversight. Inspects regional analytics and impact forecasts, views consequence estimations, exports situation reports, and authorizes disaster budgets.
 
 ### NGO
 Coordinates humanitarian aid. Views shelter occupancies, monitors food and water logistics, and logs volunteer allocations across camps.
@@ -113,13 +113,13 @@ Manages platform operations. Tracks daily API token expenses, edits system promp
 ## AI Features
 
 ### 1. Tailored Recommendation Engine
-Uses GPT-4o to analyze sensor telemetry and user profile details. Synthesizes concrete tasks and safety checklists customized for the specific role (e.g. harvesting guidance for farmers, dispatch orders for fire crews).
+Uses GPT-4o to analyze sensor telemetry and user profile details. Synthesizes concrete tasks and anticipatory safety checklists customized for the specific role (e.g. harvesting guidance for farmers, dispatch orders for fire crews).
 
 ### 2. Multi-Modal Vision Verification
-Invokes GPT-4o Vision to examine user-uploaded report photos. Compares visual evidence against description text to filter out false alarms, outputting verification status, confidence score, and severity level.
+Invokes GPT-4o Vision to examine user-uploaded Ground Report photos. Compares visual evidence against description text to filter out false alarms, outputting verification status, confidence score, and severity level.
 
 ### 3. Policy RAG Assistant
-Integrates semantic search using vector embeddings (`text-embedding-3-small`) stored in `pgvector`. Retrieves matching paragraphs from disaster guidelines and generates structured answers citing official files.
+Integrates semantic search using vector embeddings (`text-embedding-3-small`) stored in `pgvector`. Retrieves matching paragraphs from early warning guidelines and generates structured answers citing official files.
 
 ---
 

@@ -24,13 +24,13 @@ export default function ActiveIncidentsTab() {
     <div className="space-y-6 animate-fadeIn">
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          Emergency Operations Control
+          Early Warning Operations Control
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Active Incidents Directory
+          Active Hazard Registry
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
-          Audit incoming community alerts, toggle resolution states, and dispatch rescue teams.
+          Audit incoming ground alerts, toggle resolution states, and dispatch emergency response assets.
         </p>
       </div>
 
@@ -38,7 +38,7 @@ export default function ActiveIncidentsTab() {
         {/* Table of Incidents */}
         <div className="lg:col-span-8 bg-[#151D2A] border border-[#2E3A4E] rounded-xs overflow-hidden">
           <div className="p-4 border-b border-[#2E3A4E] flex justify-between items-center bg-[#1C2635]/40">
-            <span className="text-xs font-mono text-[#C5A880] uppercase font-bold">Incident Log Registry</span>
+            <span className="text-xs font-mono text-[#C5A880] uppercase font-bold">Hazard Event Log</span>
             <span className="text-[9px] font-mono text-[#94A3B8]">{incidents.length} Events Total</span>
           </div>
 
@@ -105,7 +105,7 @@ export default function ActiveIncidentsTab() {
         <div className="lg:col-span-4 bg-[#151D2A] border border-[#2E3A4E] p-5 sm:p-6 rounded-xs space-y-4">
           <div className="border-b border-[#2E3A4E]/60 pb-3 flex justify-between items-center">
             <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">
-              Details Drawer
+              Inspection Drawer
             </h3>
             {selectedInc && (
               <span className="font-mono text-[9px] text-[#94A3B8]">{selectedInc.id}</span>
@@ -151,7 +151,7 @@ export default function ActiveIncidentsTab() {
             </div>
           ) : (
             <div className="py-12 text-center space-y-2">
-              <span className="text-xs text-[#64748B] block font-mono">Select an incident to audit operations</span>
+              <span className="text-xs text-[#64748B] block font-mono">Select a hazard event to inspect</span>
             </div>
           )}
         </div>

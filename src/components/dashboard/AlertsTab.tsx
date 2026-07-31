@@ -13,11 +13,11 @@ export default function AlertsTab({ role }: AlertsTabProps) {
 
   // Simulated SMS Broadcast log
   const [smsLogs] = useState([
-    { phone: "+254 712 *** 889", status: "delivered", time: "10 mins ago", msg: "ActionLens Alert: Garsen Basin river levels breaching 8.4m limit. Seek high ground." },
-    { phone: "+254 722 *** 451", status: "delivered", time: "12 mins ago", msg: "ActionLens Alert: Garsen Basin river levels breaching 8.4m limit. Seek high ground." },
-    { phone: "+254 701 *** 092", status: "delivered", time: "15 mins ago", msg: "ActionLens Alert: Garsen Basin river levels breaching 8.4m limit. Seek high ground." },
-    { phone: "+254 754 *** 331", status: "delivered", time: "18 mins ago", msg: "ActionLens Alert: Table Mountain wildfire red flag watch active." },
-    { phone: "+254 792 *** 229", status: "delivered", time: "22 mins ago", msg: "ActionLens Alert: Table Mountain wildfire red flag watch active." },
+    { phone: "+254 712 *** 889", status: "delivered", time: "10 mins ago", msg: "ActionLens Early Warning: Tana River levels breaching 8.4m. Seek high ground." },
+    { phone: "+254 722 *** 451", status: "delivered", time: "12 mins ago", msg: "ActionLens Early Warning: Tana River levels breaching 8.4m. Seek high ground." },
+    { phone: "+254 701 *** 092", status: "delivered", time: "15 mins ago", msg: "ActionLens Early Warning: Tana River levels breaching 8.4m. Seek high ground." },
+    { phone: "+254 754 *** 331", status: "delivered", time: "18 mins ago", msg: "ActionLens Early Warning: Nairobi Dryland Fire Risk red flag watch active." },
+    { phone: "+254 792 *** 229", status: "delivered", time: "22 mins ago", msg: "ActionLens Early Warning: Nairobi Dryland Fire Risk red flag watch active." },
   ]);
 
   const filteredAlerts = DEMO_ACTIVE_ALERTS.filter(alert => {
@@ -33,10 +33,10 @@ export default function AlertsTab({ role }: AlertsTabProps) {
       {/* Header */}
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          Emergency Communications Core
+          Early Warning Broadcast Center
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Active Threat Advisories
+          Early Warning Advisories
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
           Review warnings, forecast notices, and simulated SMS dispatch confirmation logs.
@@ -52,10 +52,10 @@ export default function AlertsTab({ role }: AlertsTabProps) {
             <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-wider font-bold">Filter Categories</span>
             <div className="flex gap-2">
               {[
-                { id: "all", label: "All Alerts" },
-                { id: "government", label: "Official Gov" },
+                { id: "all", label: "All Advisories" },
+                { id: "government", label: "Official ICPAC/Gov" },
                 { id: "weather", label: "Meteorological" },
-                { id: "ai", label: "AI Predicted" },
+                { id: "ai", label: "AI Anticipatory Alerts" },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -116,7 +116,7 @@ export default function AlertsTab({ role }: AlertsTabProps) {
         <div className="lg:col-span-4 bg-[#151D2A] border border-[#2E3A4E] p-5 rounded-xs space-y-4">
           <div className="border-b border-[#2E3A4E]/60 pb-3">
             <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold flex items-center gap-1.5">
-              <MessageSquare className="h-4 w-4 text-[#C5A880]" /> SMS Dispatch Logs
+              <MessageSquare className="h-4 w-4 text-[#C5A880]" /> Early Warning SMS Logs
             </h3>
           </div>
 

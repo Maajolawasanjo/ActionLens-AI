@@ -32,8 +32,8 @@ export default function MapTab({ role }: MapTabProps) {
   // Selected incident details for drawer
   const [selectedItem, setSelectedItem] = useState<any>({
     id: "garsen_flood",
-    title: "Garsen Basin Flooding Core Area",
-    type: "flood",
+    title: "Tana River Flood Warning",
+    type: "Hazard Zone",
     severity: "critical",
     lat: -1.8845,
     lng: 40.1221,
@@ -59,9 +59,9 @@ export default function MapTab({ role }: MapTabProps) {
       id: "garsen_flood",
       lat: -1.8845,
       lng: 40.1221,
-      title: "Garsen Basin Flood",
+      title: "Tana River Flood Warning",
       severity: "critical",
-      type: "Flood Zone",
+      type: "Hazard Zone",
       description: "Hydrology sensors report 8.4m river discharge, breaching low embankments and threatening local farm pastures.",
       ai_directives: {
         action: "Evacuate lowland herds & dispatch flood barriers to Main Bridge corridor.",
@@ -72,15 +72,15 @@ export default function MapTab({ role }: MapTabProps) {
       }
     });
   }
-
+ 
   if (showWildfires) {
     mapMarkers.push({
       id: "table_mountain_fire",
       lat: -33.9249,
       lng: 18.4241,
-      title: "Table Mountain Wildfire Front",
+      title: "Nairobi Forest Dryland Fire Risk",
       severity: "high",
-      type: "Wildfire",
+      type: "Dryland Hotspot",
       description: "Dry brush fire accelerated by 40km/h winds approaching suburban buffer zones.",
       ai_directives: {
         action: "Prepare backup water tankers & trigger red flag warning for Cape Town suburbs.",
@@ -140,9 +140,9 @@ export default function MapTab({ role }: MapTabProps) {
         id: r.id,
         lat: r.latitude,
         lng: r.longitude,
-        title: `Citizen Report: ${r.category.toUpperCase()}`,
+        title: `Ground Report: ${r.category.toUpperCase()}`,
         severity: r.severity,
-        type: "Community Upload",
+        type: "Ground Report Verification",
         description: r.description,
         ai_directives: {
           action: `Verify field photos: ${r.objects_detected.join(", ")} identified.`,
@@ -160,13 +160,13 @@ export default function MapTab({ role }: MapTabProps) {
       {/* Header */}
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          GIS Telemetry Center
+          Operations Center Map
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Interactive Live Risk Map
+          Anticipatory Risk & Early Warning Map
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
-          Toggle layers to locate flood boundaries, active wildfire lines, verified citizen reports, and medical shelters.
+          Toggle layers to locate flood boundaries, active dryland fire hotspots, verified ground reports, and response centers.
         </p>
       </div>
 
@@ -187,7 +187,7 @@ export default function MapTab({ role }: MapTabProps) {
                   onChange={(e) => setShowFloods(e.target.checked)}
                   className="h-3.5 w-3.5 border-[#2E3A4E] text-[#C5A880] rounded-xs accent-[#C5A880]"
                 />
-                <span>Flood Hazards</span>
+                <span>Flood Hazard Zones (ICPAC)</span>
               </label>
               
               <label className="flex items-center gap-2.5 py-1 hover:text-[#E2E8F0] cursor-pointer">
@@ -197,7 +197,7 @@ export default function MapTab({ role }: MapTabProps) {
                   onChange={(e) => setShowWildfires(e.target.checked)}
                   className="h-3.5 w-3.5 border-[#2E3A4E] text-[#C5A880] rounded-xs accent-[#C5A880]"
                 />
-                <span>Wildfire Hotspots</span>
+                <span>Active Dryland Fire Hotspots</span>
               </label>
 
               <label className="flex items-center gap-2.5 py-1 hover:text-[#E2E8F0] cursor-pointer">
@@ -207,7 +207,7 @@ export default function MapTab({ role }: MapTabProps) {
                   onChange={(e) => setShowShelters(e.target.checked)}
                   className="h-3.5 w-3.5 border-[#2E3A4E] text-[#C5A880] rounded-xs accent-[#C5A880]"
                 />
-                <span>Evacuation Shelters</span>
+                <span>Response Centers</span>
               </label>
 
               <label className="flex items-center gap-2.5 py-1 hover:text-[#E2E8F0] cursor-pointer">
@@ -217,7 +217,7 @@ export default function MapTab({ role }: MapTabProps) {
                   onChange={(e) => setShowHospitals(e.target.checked)}
                   className="h-3.5 w-3.5 border-[#2E3A4E] text-[#C5A880] rounded-xs accent-[#C5A880]"
                 />
-                <span>Hospitals & Clinics</span>
+                <span>Medical Facilities</span>
               </label>
 
               <label className="flex items-center gap-2.5 py-1 hover:text-[#E2E8F0] cursor-pointer">
@@ -227,14 +227,14 @@ export default function MapTab({ role }: MapTabProps) {
                   onChange={(e) => setShowReports(e.target.checked)}
                   className="h-3.5 w-3.5 border-[#2E3A4E] text-[#C5A880] rounded-xs accent-[#C5A880]"
                 />
-                <span>Community Reports</span>
+                <span>Ground Reports</span>
               </label>
             </div>
           </div>
 
           {/* ACTIVE MARKERS INTERACTIVE LIST */}
           <div className="bg-[#151D2A] border border-[#2E3A4E] p-4 rounded-xs space-y-3">
-            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Map Node Registry</h3>
+            <h3 className="text-xs font-mono text-[#C5A880] uppercase tracking-wider font-bold">Early Warning & Hazard Registry</h3>
             <div className="space-y-2 max-h-[220px] overflow-y-auto pr-1">
               {mapMarkers.map((marker) => (
                 <button
@@ -289,7 +289,7 @@ export default function MapTab({ role }: MapTabProps) {
               <div className="md:col-span-5 bg-[#0B111E] border border-[#2E3A4E] p-4 rounded-xs space-y-3.5">
                 <div className="flex justify-between items-center border-b border-[#2E3A4E]/60 pb-2">
                   <span className="font-mono text-[9px] text-[#C5A880] font-bold flex items-center gap-1.5">
-                    <Cpu className="h-3.5 w-3.5 text-[#C5A880]" /> AI ACTION DIRECTIVE
+                    <Cpu className="h-3.5 w-3.5 text-[#C5A880]" /> AI ANTICIPATORY ACTION DIRECTIVE
                   </span>
                   <span className="font-mono text-[9px] text-[#2E7D5B] font-bold bg-[#2E7D5B]/15 px-2 py-0.5 rounded-xs">
                     {(selectedItem.ai_directives.confidence * 100).toFixed(0)}% Confidence
@@ -297,12 +297,12 @@ export default function MapTab({ role }: MapTabProps) {
                 </div>
 
                 <div className="space-y-1">
-                  <span className="font-mono text-[8px] text-[#94A3B8] uppercase block">Recommended Action</span>
+                  <span className="font-mono text-[8px] text-[#94A3B8] uppercase block">Recommended Anticipatory Action</span>
                   <p className="text-xs text-[#E2E8F0] font-sans font-medium">{selectedItem.ai_directives.action}</p>
                 </div>
 
                 <div className="space-y-1">
-                  <span className="font-mono text-[8px] text-[#94A3B8] uppercase block">Checklist Task Group</span>
+                  <span className="font-mono text-[8px] text-[#94A3B8] uppercase block">Priority Actions Checklist</span>
                   <ul className="space-y-1.5 text-[11px] font-sans text-[#94A3B8]">
                     {selectedItem.ai_directives.checklist.map((task: string, i: number) => (
                       <li key={i} className="flex items-start gap-2">

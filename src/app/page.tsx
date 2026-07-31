@@ -104,15 +104,15 @@ export default function MarketingLandingPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#C5A880]/10 border border-[#C5A880]/30 rounded-xs max-w-full">
                 <Radio className="h-3 w-3 text-[#C5A880] animate-pulse shrink-0" />
                 <span className="text-[8px] sm:text-[9px] font-mono text-[#C5A880] uppercase tracking-widest font-bold truncate">
-                  Climate Resilience & Tactical Dispatch System
+                  Early Warning & Anticipatory Action Platform
                 </span>
               </div>
               <h1 className="font-editorial text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] sm:leading-[1.05] tracking-tight text-[#E2E8F0]">
-                Smarter Early Warning, <br className="hidden sm:block" />
-                <span className="text-[#C5A880] font-bold">Stronger Communities.</span>
+                Act Before <br className="hidden sm:block" />
+                <span className="text-[#C5A880] font-bold">Disaster Strikes.</span>
               </h1>
               <p className="text-xs sm:text-sm md:text-base text-[#94A3B8] leading-relaxed max-w-2xl font-normal font-sans">
-                ActionLens AI bridges the gap between complex climate predictions and immediate community actions. We ingest environmental telemetry feeds and convert them into clear, role-specific checklists to safeguard lives before hazard impacts occur.
+                ActionLens transforms community reports, weather intelligence, and AI into trusted early warnings and coordinated response—helping communities, responders, NGOs, and governments make faster, smarter decisions.
               </p>
             </div>
 
@@ -568,29 +568,29 @@ export default function MarketingLandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { 
-                role: "Government Leader", 
+                role: "Government Agencies", 
                 icon: Landmark, 
-                desc: "Authorize emergency funding, declare disaster zones, and coordinate high-level evacuation policies across regions." 
+                desc: "Authorize emergency funding, declare hazard zones, and coordinate high-level evacuation policies across regions." 
               },
               { 
-                role: "NGO Humanitarian Lead", 
+                role: "Humanitarian Organizations", 
                 icon: Globe2, 
                 desc: "Coordinate distribution centers, dispatch emergency rations, and organize local rescue shelter logistics." 
               },
               { 
-                role: "Emergency Responder", 
+                role: "Emergency Responders", 
                 icon: Shield, 
                 desc: "Execute search & rescue operations, secure communication grids, and manage medical field triage camps." 
               },
               { 
-                role: "Citizen / Resident", 
+                role: "Communities", 
                 icon: Users, 
-                desc: "Access localized safety maps, receive urgent notifications, and submit field reports (geotagged reports)." 
+                desc: "Access localized safety maps, receive urgent notifications, and submit ground reports (geotagged reports)." 
               },
               { 
-                role: "System Administrator", 
+                role: "Disaster Operations Centers", 
                 icon: Cpu, 
-                desc: "Configure system system prompts, monitor token usage rates, and oversee database backup nodes." 
+                desc: "Configure system prompts, monitor token usage rates, and oversee database backup nodes." 
               }
             ].map((item, idx) => {
               const IconComp = item.icon;

@@ -134,12 +134,12 @@ export interface ResourceDocumentSeed {
 export const DEMO_COMMUNITY_REPORTS: CommunityReportSeed[] = [
   {
     id: "rep_1",
-    title: "Severe Road Inundation in Makoko Waterway District",
-    description: "Coastal tidal surge combined with heavy rainfall has flooded main access roads by 1.2m. Residents utilizing canoes for navigation.",
-    country: "Nigeria", state: "Lagos", city: "Lagos",
-    latitude: 6.4969, longitude: 3.3881,
+    title: "Severe Road Inundation in Garsen Basin",
+    description: "Tana River discharge spike combined with heavy rainfall has flooded main access roads by 1.2m. Residents utilizing canoes for navigation.",
+    country: "Kenya", state: "Tana River", city: "Garsen",
+    latitude: -1.8845, longitude: 40.1221,
     category: "flood", severity: "critical", status: "verified",
-    reporter_name: "Adekunle Bello", reporter_role: "Community Lead",
+    reporter_name: "Abdi Yusuf", reporter_role: "Community Lead",
     created_at: "12 mins ago", ai_verified: true, ai_confidence: 0.96,
     image_url: "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=800&auto=format&fit=crop&q=80",
     objects_detected: ["Water Inundated Road", "Submerged Vehicles", "Floating Debris"],
@@ -147,12 +147,12 @@ export const DEMO_COMMUNITY_REPORTS: CommunityReportSeed[] = [
   },
   {
     id: "rep_2",
-    title: "Structural Crack & Wall Collapse Post-Storm in Maitama",
-    description: "Retention wall behind residential complex cracked following 4 hours of torrential downpour. Two vehicles crushed.",
-    country: "Nigeria", state: "FCT", city: "Abuja",
-    latitude: 9.0765, longitude: 7.3986,
+    title: "Fallen Debris and Road Blockage near Laikipia Foothills",
+    description: "Erosion from torrential rains has triggered rocky debris onto major transit pathways, obstructing response center vehicles.",
+    country: "Kenya", state: "Laikipia", city: "Nanyuki",
+    latitude: 0.0167, longitude: 37.0722,
     category: "infrastructure", severity: "high", status: "verified",
-    reporter_name: "Fatima Alhassan", reporter_role: "Resident",
+    reporter_name: "David Kiprono", reporter_role: "Resident",
     created_at: "28 mins ago", ai_verified: true, ai_confidence: 0.93,
     image_url: "https://images.unsplash.com/photo-1584467735815-f778f274e296?w=800&auto=format&fit=crop&q=80",
     objects_detected: ["Collapsed Brickwork", "Cracked Foundation", "Structural Damage"],
@@ -160,12 +160,12 @@ export const DEMO_COMMUNITY_REPORTS: CommunityReportSeed[] = [
   },
   {
     id: "rep_3",
-    title: "River Benue Overflow Near Wadata Market",
+    title: "Tana River Overflow Near Garissa Market",
     description: "River water breaching banks by 1.8 meters. Market stalls being evacuated rapidly as water level rises.",
-    country: "Nigeria", state: "Benue", city: "Makurdi",
-    latitude: 7.7322, longitude: 8.5214,
+    country: "Kenya", state: "Garissa", city: "Garissa",
+    latitude: -0.4532, longitude: 39.6460,
     category: "flood", severity: "critical", status: "verified",
-    reporter_name: "Terna Ortom", reporter_role: "Vendor",
+    reporter_name: "Amina Garane", reporter_role: "Vendor",
     created_at: "45 mins ago", ai_verified: true, ai_confidence: 0.98,
     image_url: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=800&auto=format&fit=crop&q=80",
     objects_detected: ["River Water Cresting", "Market Stalls Submerged"],
@@ -173,12 +173,12 @@ export const DEMO_COMMUNITY_REPORTS: CommunityReportSeed[] = [
   },
   {
     id: "rep_4",
-    title: "Table Mountain Slope Bushfire Spreading Eastward",
-    description: "High winds accelerating fynbos dry brush fire toward Newlands suburb. Thick smoke plume visible across Cape Town basin.",
-    country: "South Africa", state: "Western Cape", city: "Cape Town",
-    latitude: -33.9249, longitude: 18.4241,
+    title: "Laikipia Dryland Brush Fire Spreading Eastward",
+    description: "High winds accelerating acacia dry brush fire toward local settlements. Dense smoke plume visible across the sub-county corridor.",
+    country: "Kenya", state: "Laikipia", city: "Rumuruti",
+    latitude: 0.2703, longitude: 36.5372,
     category: "wildfire", severity: "critical", status: "verified",
-    reporter_name: "Pieter van Zyl", reporter_role: "Volunteer Fire Watch",
+    reporter_name: "John Kiprotich", reporter_role: "Volunteer Fire Watch",
     created_at: "1 hour ago", ai_verified: true, ai_confidence: 0.97,
     image_url: "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?w=800&auto=format&fit=crop&q=80",
     objects_detected: ["Active Wildfire Front", "Dense Smoke Plume"],
@@ -186,12 +186,12 @@ export const DEMO_COMMUNITY_REPORTS: CommunityReportSeed[] = [
   },
   {
     id: "rep_5",
-    title: "Nyabugogo Ravine Landslide Blocking Northern Transit",
-    description: "Heavy rain triggered 400-ton mud and rock slide across major transport artery. Traffic completely halted.",
-    country: "Rwanda", state: "Kigali City", city: "Kigali",
-    latitude: -1.9441, longitude: 30.0619,
+    title: "Mathare Valley Slope Erosion & Mudslide",
+    description: "Heavy rain triggered local mud and rock slide across Mathare River bypass route. Transit completely halted.",
+    country: "Kenya", state: "Nairobi", city: "Mathare",
+    latitude: -1.2612, longitude: 36.8583,
     category: "landslide", severity: "high", status: "verified",
-    reporter_name: "Jean-Paul Habimana", reporter_role: "Transit Officer",
+    reporter_name: "Aisha Mwangi", reporter_role: "Transit Officer",
     created_at: "1 hour ago", ai_verified: true, ai_confidence: 0.91,
     image_url: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=800&auto=format&fit=crop&q=80",
     objects_detected: ["Mudslide Debris", "Blocked Highway"],
@@ -534,18 +534,18 @@ export const DEMO_AI_RECOMMENDATIONS: AIRecommendationSeed[] = [
 // ── 5. ACTIVE ALERTS (8 Seed Items) ──
 export const DEMO_ACTIVE_ALERTS: ActiveAlertSeed[] = [
   {
-    id: "alt_1", title: "🔴 Flash Flood Warning — Coastal & Lagoon Districts", severity: "critical",
-    type: "flood", city: "Lagos", region: "Lagos", country: "Nigeria",
-    issued_by: "Nigerian Meteorological Agency (NiMet)", issued_time: "25 mins ago", expires_in: "18 hours",
+    id: "alt_1", title: "🔴 Flash Flood Warning — Garsen Riverine Basin", severity: "critical",
+    type: "flood", city: "Garsen", region: "Tana River", country: "Kenya",
+    issued_by: "Kenya Meteorological Department / ICPAC", issued_time: "25 mins ago", expires_in: "18 hours",
     affected_population: 240000, risk_level: "Level 4 Extreme",
-    recommended_action: "Evacuate low-lying structures in Makoko, Lekki Phase 1, and Victoria Island extension."
+    recommended_action: "Evacuate low-lying structures along the Tana River banks near Garsen."
   },
   {
-    id: "alt_2", title: "🔴 Category 4 Hurricane Warning — Coastal Grid", severity: "critical",
-    type: "cyclone", city: "Miami", region: "Florida", country: "United States",
-    issued_by: "National Hurricane Center (NHC)", issued_time: "1 hour ago", expires_in: "36 hours",
-    affected_population: 850000, risk_level: "Level 4 Extreme",
-    recommended_action: "Mandatory evacuation for Zone A & B. Proceed to Hurricane Shelter #4."
+    id: "alt_2", title: "🔴 Severe Drought & Water Depletion Notice", severity: "critical",
+    type: "drought", city: "Wajir", region: "Wajir County", country: "Kenya",
+    issued_by: "National Drought Management Authority (NDMA) / ICPAC", issued_time: "1 hour ago", expires_in: "30 days",
+    affected_population: 320000, risk_level: "Level 4 Extreme",
+    recommended_action: "Activate emergency water trucking and distribute pre-positioned livestock feed."
   },
   {
     id: "alt_3", title: "🟠 Wildfire Red Flag Alert — San Gabriel Mountains", severity: "high",
@@ -583,32 +583,32 @@ export const DEMO_ACTIVE_ALERTS: ActiveAlertSeed[] = [
     recommended_action: "Boil all drinking water. Report diarrhea symptoms to local health outpost."
   },
   {
-    id: "alt_8", title: "🟡 Dam Overflow Watch — River Benue Basin", severity: "moderate",
-    type: "flood", city: "Makurdi", region: "Benue", country: "Nigeria",
-    issued_by: "Benue State Emergency Management (SEMA)", issued_time: "6 hours ago", expires_in: "24 hours",
+    id: "alt_8", title: "🟡 River Spillway Watch — Garissa Basin", severity: "moderate",
+    type: "flood", city: "Garissa", region: "Garissa", country: "Kenya",
+    issued_by: "Kenya Ministry of Water & Sanitation", issued_time: "6 hours ago", expires_in: "24 hours",
     affected_population: 110000, risk_level: "Level 2 Moderate",
-    recommended_action: "Move riverside cattle herds to elevated grazing lands."
+    recommended_action: "Move riverside agricultural assets to elevated zones."
   }
 ];
 
 // ── 6. INCIDENT TIMELINES (15 Seed Items) ──
 export const DEMO_INCIDENT_TIMELINES: IncidentTimelineSeed[] = [
   {
-    id: "timeline_lagos",
-    title: "Lagos Coastal & Lagoon Flash Flood",
-    location: "Lagos, Nigeria",
-    country: "Nigeria",
+    id: "timeline_tana",
+    title: "Tana River Basin Flash Flood",
+    location: "Garsen, Kenya",
+    country: "Kenya",
     status: "active",
     milestones: [
-      { time: "06:15 EAT", title: "Torrential Downpour Detected", description: "NiMet satellite telemetry registers 42mm/hr rain intensity across Lagos basin.", category: "telemetry" },
-      { time: "06:40 EAT", title: "Lagoon Gauge Exceeds Threshold", description: "Water level reaches 8.2m (+1.2m above safety line).", category: "telemetry" },
+      { time: "06:15 EAT", title: "Torrential Downpour Detected", description: "Kenya Met / ICPAC satellite telemetry registers 42mm/hr rain intensity across Tana River basin.", category: "telemetry" },
+      { time: "06:40 EAT", title: "River level Sensor Exceeds Threshold", description: "Water level reaches 8.2m (+1.2m above safety line).", category: "telemetry" },
       { time: "07:05 EAT", title: "ActionLens AI Alert Generated", description: "System triggers Level 4 Red Flood Warning to 14,000 users.", category: "ai" },
-      { time: "07:10 EAT", title: "SMS Broadcast Transmitted", description: "Cellular broadcast sent to Makoko & Lekki Phase 1 residents.", category: "alert" },
-      { time: "07:18 EAT", title: "Citizen Field Pings Received", description: "50+ verified community reports logged in ActionLens dashboard.", category: "report" },
+      { time: "07:10 EAT", title: "SMS Broadcast Transmitted", description: "Cellular broadcast sent to Garsen town and riverine settlements.", category: "alert" },
+      { time: "07:18 EAT", title: "Ground Reports Received", description: "50+ verified ground reports logged in ActionLens dashboard.", category: "report" },
       { time: "07:25 EAT", title: "Vision AI Confirms Inundation", description: "Uploaded drone & phone photos verified at 96% AI confidence.", category: "ai" },
-      { time: "07:35 EAT", title: "National Stadium Shelter Opened", description: "Emergency shelter activated with 2,500 capacity.", category: "action" },
-      { time: "07:45 EAT", title: "Third Mainland Traffic Diverted", description: "Police clear priority evacuation routes.", category: "dispatch" },
-      { time: "08:10 EAT", title: "First Responder Boats Deployed", description: "12 water rescue crafts deployed to Makoko water channels.", category: "dispatch" }
+      { time: "07:35 EAT", title: "Garsen Central Response Outpost Opened", description: "Emergency response center activated with 2,500 capacity.", category: "action" },
+      { time: "07:45 EAT", title: "Garissa-Garsen Corridor Traffic Diverted", description: "Police clear priority evacuation routes.", category: "dispatch" },
+      { time: "08:10 EAT", title: "First Responder Boats Deployed", description: "12 water rescue crafts deployed to flooded Garsen corridors.", category: "dispatch" }
     ]
   },
   {

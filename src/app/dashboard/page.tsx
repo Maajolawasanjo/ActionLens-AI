@@ -90,53 +90,53 @@ export default function DashboardPage() {
     switch (selectedPersona) {
       case "citizen":
         return [
-          { id: "home", label: "Overview Home", icon: Home },
-          { id: "community", label: "Community Reports", icon: MessageSquare },
-          { id: "map", label: "Emergency Map", icon: Map },
-          { id: "alerts", label: "Alerts Timeline", icon: AlertTriangle },
+          { id: "home", label: "Operations Center", icon: Home },
+          { id: "community", label: "Ground Reports", icon: MessageSquare },
+          { id: "map", label: "Operations Map", icon: Map },
+          { id: "alerts", label: "Early Warnings", icon: AlertTriangle },
           { id: "preparedness", label: "Preparedness Kit", icon: Shield },
-          { id: "assistant", label: "AI Safety Assistant", icon: Cpu },
-          { id: "resources", label: "Nearby Resources", icon: Database },
+          { id: "assistant", label: "Preparedness Assistant", icon: Cpu },
+          { id: "resources", label: "Response Resources", icon: Database },
           { id: "profile", label: "Profile & Settings", icon: User },
         ];
       case "responder":
         return [
-          { id: "home", label: "Operations Home", icon: Home },
-          { id: "incidents", label: "Active Incidents", icon: Clock },
+          { id: "home", label: "Operations Center", icon: Home },
+          { id: "incidents", label: "Active Hazard Events", icon: Clock },
           { id: "dispatch", label: "Dispatch Center", icon: Truck },
           { id: "map", label: "Operations Map", icon: Map },
-          { id: "resources", label: "Tactical Resources", icon: Database },
-          { id: "alerts", label: "Alerts & Outbox", icon: AlertTriangle },
-          { id: "analytics", label: "Response Analytics", icon: BarChart3 },
-          { id: "assistant", label: "AI Tactical Assistant", icon: Cpu },
+          { id: "resources", label: "Response Resources", icon: Database },
+          { id: "alerts", label: "Early Warnings", icon: AlertTriangle },
+          { id: "analytics", label: "Situation Assessment", icon: BarChart3 },
+          { id: "assistant", label: "Preparedness Assistant", icon: Cpu },
         ];
       case "government":
         return [
-          { id: "home", label: "Executive Home", icon: Home },
-          { id: "map", label: "National Map", icon: Map },
-          { id: "analytics", label: "Impact Simulator", icon: BarChart3 },
-          { id: "funding", label: "Mitigation Budget", icon: Landmark },
-          { id: "reports", label: "Executive Briefings", icon: FileText },
-          { id: "assistant", label: "AI Policy Assistant", icon: Cpu },
+          { id: "home", label: "Operations Center", icon: Home },
+          { id: "map", label: "Operations Map", icon: Map },
+          { id: "analytics", label: "Impact Forecast", icon: BarChart3 },
+          { id: "funding", label: "Anticipatory Funding", icon: Landmark },
+          { id: "reports", label: "Situation Overview", icon: FileText },
+          { id: "assistant", label: "Preparedness Assistant", icon: Cpu },
         ];
       case "ngo":
         return [
-          { id: "home", label: "NGO Overview", icon: Home },
-          { id: "shelters", label: "Shelter Capacity", icon: Landmark },
-          { id: "aid", label: "Aid Distribution", icon: Truck },
-          { id: "volunteers", label: "Volunteer Roster", icon: Users },
-          { id: "map", label: "Logistics Map", icon: Map },
-          { id: "inventory", label: "Warehouse Supplies", icon: Database },
-          { id: "reports", label: "Humanitarian Logs", icon: FileText },
-          { id: "assistant", label: "AI Relief Assistant", icon: Cpu },
+          { id: "home", label: "Operations Center", icon: Home },
+          { id: "shelters", label: "Response Centers", icon: Landmark },
+          { id: "aid", label: "Resource Logistics", icon: Truck },
+          { id: "volunteers", label: "Responder Team", icon: Users },
+          { id: "map", label: "Operations Map", icon: Map },
+          { id: "inventory", label: "Response Supplies", icon: Database },
+          { id: "reports", label: "Situation Logs", icon: FileText },
+          { id: "assistant", label: "Preparedness Assistant", icon: Cpu },
         ];
       case "admin":
       default:
         return [
-          { id: "home", label: "Control Overview", icon: Home },
+          { id: "home", label: "Operations Center", icon: Home },
           { id: "admin", label: "Platform Settings", icon: Settings },
-          { id: "map", label: "Telemetry Map", icon: Map },
-          { id: "assistant", label: "AI Sandbox", icon: Cpu },
+          { id: "map", label: "Operations Map", icon: Map },
+          { id: "assistant", label: "Preparedness Sandbox", icon: Cpu },
           { id: "profile", label: "Admin Profile", icon: User },
         ];
     }
@@ -226,11 +226,11 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 bg-[#151D2A] border border-[#2E3A4E] py-1.5 px-3 rounded-xs shrink-0">
             <span className="text-[9px] font-mono text-[#94A3B8] uppercase hidden md:inline">Stakeholder Node:</span>
             <span className="text-[#C5A880] text-xs font-mono font-bold uppercase">
-              {selectedPersona === "citizen" && "Public Citizen"}
-              {selectedPersona === "responder" && "First Responder"}
-              {selectedPersona === "government" && "Government Leader"}
-              {selectedPersona === "ngo" && "Humanitarian Org"}
-              {selectedPersona === "admin" && "System Admin"}
+              {selectedPersona === "citizen" && "Communities"}
+              {selectedPersona === "responder" && "Emergency Responders"}
+              {selectedPersona === "government" && "Government Agencies"}
+              {selectedPersona === "ngo" && "Humanitarian Organizations"}
+              {selectedPersona === "admin" && "Disaster Operations Centers"}
             </span>
           </div>
 
@@ -280,7 +280,12 @@ export default function DashboardPage() {
             </div>
             <div className="truncate">
               <span className="text-xs text-[#E2E8F0] font-medium block truncate">{userName}</span>
-              <span className="text-[9px] font-mono text-[#94A3B8] uppercase block truncate">{selectedPersona} node</span>
+              <span className="text-[9px] font-mono text-[#94A3B8] uppercase block truncate">
+                {selectedPersona === "citizen" ? "Communities" :
+                 selectedPersona === "responder" ? "Responders" :
+                 selectedPersona === "government" ? "Agencies" :
+                 selectedPersona === "ngo" ? "NGOs" : "Admin"} Node
+              </span>
             </div>
           </div>
         </aside>

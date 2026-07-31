@@ -20,19 +20,19 @@ export default function ReportsTab() {
   };
 
   const reportsList = [
-    { title: "Daily Situation Overview - July 31", size: "240 KB", date: "Today 08:30" },
+    { title: "Daily Situation Assessment - July 31", size: "240 KB", date: "Today 08:30" },
     { title: "ICPAC Hydrology Discharge Summary", size: "1.2 MB", date: "Yesterday" },
-    { title: "National Mitigation Budget Ledger", size: "48 KB", date: "2026-07-29" },
+    { title: "Anticipatory Funding Logs", size: "48 KB", date: "2026-07-29" },
   ];
 
   return (
     <div className="space-y-6 animate-fadeIn">
       <div>
         <span className="text-[10px] font-mono text-[#C5A880] uppercase tracking-widest block font-bold">
-          Platform Reporting
+          Operations Briefings
         </span>
         <h2 className="font-editorial text-xl sm:text-2xl text-[#E2E8F0] mt-1">
-          Executive Reports & Briefings
+          Situation Overview Logs
         </h2>
         <p className="text-xs text-[#94A3B8] font-sans">
           Compile operational reports, export historical CSV indices, and synthesize real-time executive summaries.
@@ -60,7 +60,7 @@ export default function ReportsTab() {
             {loading ? (
               <div className="py-8 text-center space-y-2">
                 <span className="h-5 w-5 rounded-full border-2 border-[#C5A880] border-t-transparent animate-spin block mx-auto" />
-                <span className="text-xs font-mono text-[#94A3B8]">Querying sensor arrays & PGVector similarity weights...</span>
+                <span className="text-xs font-mono text-[#94A3B8]">Querying ICPAC sensor arrays & PGVector similarity weights...</span>
               </div>
             ) : (
               <p className="text-xs text-[#E2E8F0] leading-relaxed font-sans font-medium whitespace-pre-line">

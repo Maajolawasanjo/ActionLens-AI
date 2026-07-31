@@ -3,8 +3,8 @@
 ## Project Information
 
 Project Name: ActionLens AI  
-Tagline: IGAD Decision Intelligence Platform for Early Warning & Climate Resilience  
-Short Description: A decision intelligence system that converts environmental telemetry, hazard notifications, and satellite data into role-specific, actionable checklist directives for communities, responders, and administrators in East Africa.
+Tagline: ICPAC-Aligned Early Warning & Anticipatory Action Platform for Climate Resilience in East Africa  
+Short Description: An AI-powered Early Warning & Anticipatory Action Platform that converts environmental telemetry, ground reports, and satellite data into role-specific, actionable checklist directives for communities, responders, and administrators in East Africa.
 
 ### Badges
 
@@ -52,7 +52,7 @@ Short Description: A decision intelligence system that converts environmental te
 
 ## Project Description
 
-ActionLens AI is a decision intelligence platform designed to support climate adaptation, disaster preparedness, and community resilience in the East African Intergovernmental Authority on Development (IGAD) sub-region. The platform acts as a bridge between broad regional meteorological forecasts and the targeted field operations required during sudden climate shocks. It aggregates regional environmental data, processes it via an advanced AI reasoning layer, and delivers isolated, actionable response protocols to multiple stakeholders simultaneously.
+ActionLens AI is an AI-powered Early Warning & Anticipatory Action Platform designed to support climate adaptation, disaster preparedness, and community resilience in the East African Intergovernmental Authority on Development (IGAD) sub-region. The platform acts as a bridge between broad regional meteorological forecasts and the targeted field operations required during sudden climate shocks. It aggregates regional environmental data, processes it via an advanced AI reasoning layer, and delivers isolated, actionable preparedness protocols to multiple stakeholders simultaneously.
 
 ---
 
@@ -62,16 +62,16 @@ Climate shocks in the Horn of Africa—characterized by sudden flash floods, lan
 
 * **Action Paralysis:** Local actors receive warnings but lack contextual guides telling them exactly what actions to execute.
 * **Coordination Gaps:** First responders, NGOs, and citizens operate on isolated feeds, leading to duplicate or misaligned efforts.
-* **Lack of Validation:** Crowdsourced crisis reports are flooded with visual noise, making it difficult for responders to prioritize resources.
+* **Lack of Validation:** Crowdsourced ground reports are flooded with visual noise, making it difficult for responders to prioritize resources.
 * **Unstructured Policy Retrieval:** In crisis scenarios, searching through hundreds of pages of government standard operating procedures (SOPs) is slow and impractical.
 
 ---
 
 ## Solution Overview
 
-ActionLens AI addresses these gaps by translating meteorological alerts and local telemetry into targeted, role-specific checklists. The solution ensures that when a flood warning is triggered, a government official is prompted to release emergency funding, a responder receives clear evacuation routes, an NGO lead gets shelter capacity notifications, and a citizen receives immediate agricultural protection guides. 
+ActionLens AI addresses these gaps by translating meteorological alerts and local telemetry into targeted, role-specific checklists. The solution ensures that when an early warning is triggered, a government official is prompted to authorize anticipatory funding, a responder receives clear evacuation routes, an NGO lead gets shelter capacity notifications, and a citizen receives immediate agricultural protection guides. 
 
-By utilizing OpenAI GPT-4o for structured action list generation, GPT-4o Vision for verifying citizen-submitted hazard photos, and pgvector for semantic retrieval of disaster policies, the platform reduces decision time from hours to seconds.
+By utilizing OpenAI GPT-4o for structured anticipatory action checklist generation, GPT-4o Vision for verifying citizen-submitted Ground Reports, and pgvector for semantic retrieval of disaster policies, the platform reduces decision time from hours to seconds.
 
 ---
 
@@ -79,19 +79,19 @@ By utilizing OpenAI GPT-4o for structured action list generation, GPT-4o Vision 
 
 ### AI Intelligence
 
-* **Structured Recommendation Engine:** Converts regional risk factors and environmental sensors into localized action lists.
-* **Vision AI Verification:** Evaluates user-submitted disaster reports using computer vision to confirm categories and estimate severity.
+* **Structured Recommendation Engine:** Converts regional risk factors and environmental sensors into localized anticipatory action lists.
+* **Vision AI Verification:** Evaluates user-submitted Ground Reports using computer vision to confirm categories and estimate severity.
 * **Policy RAG Assistant:** Dialogue interface that parses official disaster response guidelines to answer natural language queries with citations.
 
 ### Emergency Operations
 
 * **Live Spatial Hazard Map:** Interactive geographic display of active hazards, emergency shelters, and local hospital capacities.
 * **Dispatch Timeline:** Real-time logging of disaster response milestones and deployment actions.
-* **Citizen Report Registry:** Portal for geotagged hazard uploads, allowing residents to log local dangers with image attachments.
+* **Ground Reports Registry:** Portal for geotagged hazard uploads, allowing residents to log local dangers with image attachments.
 
 ### Decision Support
 
-* **Impact Consequence Simulator:** Visualizes projected casualties and agricultural losses based on evacuation delay.
+* **Anticipatory Risk & Impact Forecast:** Visualizes projected casualties and agricultural losses based on evacuation delay.
 * **Regional Analytics:** Displays charts tracking alert types, average response times, and predictive analytics.
 * **Emergency Resource Directory:** Direct access list of emergency contacts, shelter coordinates, and logistics directories.
 
@@ -101,8 +101,8 @@ By utilizing OpenAI GPT-4o for structured action list generation, GPT-4o Vision 
 
 ActionLens AI is built around advanced Large Language Model pipelines to deliver robust, reliable decisions during high-stress scenarios:
 
-* **GPT-4o Reasoning:** Used in `/generate-recommendations` to structure role-based directives in JSON format based on specific variables (role, country, region, risk type, and telemetry metrics).
-* **GPT-4o Vision Processing:** Used in `/verify-report-vision` to analyze base64 or publicly hosted image uploads. It checks report descriptions against actual visual evidence to verify authenticity and assess physical damage.
+* **GPT-4o Reasoning:** Used in `/generate-recommendations` to structure role-based anticipatory directives in JSON format based on specific variables (role, country, region, risk type, and telemetry metrics).
+* **GPT-4o Vision Processing:** Used in `/verify-report-vision` to analyze base64 or publicly hosted image uploads. It checks Ground Report descriptions against actual visual evidence to verify authenticity and assess physical damage.
 * **Embeddings and Semantic Retrieval:** Uses `text-embedding-3-small` to encode disaster policies and matches user queries against policy vectors in PostgreSQL using cosine distance metrics.
 * **Structured Outputs:** Uses Pydantic schemas in FastAPI to enforce exact structural boundaries on LLM responses, ensuring consistent schema integration.
 * **AI Guardrails:** Incorporates prompt system templates that restrict AI replies strictly to provided operational contexts, preventing model hallucinations.
@@ -113,16 +113,16 @@ ActionLens AI is built around advanced Large Language Model pipelines to deliver
 
 ActionLens AI separates permissions and command views into five targeted stakeholder roles:
 
-### Citizen
-* **Core Activities:** Submits localized hazard reports with photos, monitors weather notifications, views evacuation routes, and retrieves safety guides.
-* **Permissions:** Read-only access to global alerts; write-only access to their own community reports.
+### Citizen (Ground Reporter)
+* **Core Activities:** Submits Ground Reports with photos, monitors early warning advisories, views evacuation routes, and retrieves safety guides.
+* **Permissions:** Read-only access to early warning advisories; write-only access to their own Ground Reports.
 
 ### Emergency Responder
 * **Core Activities:** Receives dispatch coordinate logs, views real-time hazard vectors, monitors timeline logs, and checks rescue checklists.
-* **Permissions:** Read access to citizen report registries; write access to dispatch timeline milestones.
+* **Permissions:** Read access to Ground Reports registries; write access to dispatch timeline milestones.
 
 ### Government Official
-* **Core Activities:** Accesses regional hazard analytics charts, exports situational briefs, runs impact simulation scripts, and authorizes relief budgets.
+* **Core Activities:** Accesses regional hazard analytics and impact forecasts, exports situational briefs, runs impact simulation scripts, and authorizes relief budgets.
 * **Permissions:** Full read access to regional data; write access to official early warning alerts.
 
 ### NGO Logistics Lead

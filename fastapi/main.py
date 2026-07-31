@@ -122,11 +122,11 @@ async def generate_recommendations(req: RecommendationRequest):
             for k, v in req.risk_payload.items()
         )
 
-    system_prompt = """You are ActionLens AI — an IGAD-certified early warning decision intelligence system.
-You generate concise, role-specific emergency action directives grounded in environmental telemetry data.
+    system_prompt = """You are ActionLens AI — an ICPAC-aligned Early Warning & Anticipatory Action platform.
+You generate concise, role-specific anticipatory action directives grounded in climate and environmental telemetry data.
 Your recommendations must be:
-- Immediately actionable and specific to the stakeholder role
-- Grounded in the provided risk signals
+- Immediately actionable and specific to the stakeholder role (Communities, Emergency Responders, Humanitarian Organizations, Government Agencies, or Disaster Operations Centers)
+- Grounded in the provided risk signals and ICPAC preparedness guidelines
 - Time-bound with clear priority classification
 - Output ONLY valid JSON. No prose, no markdown, no code blocks."""
 
@@ -213,11 +213,11 @@ async def verify_report_vision(req: VisionVerifyRequest):
             "image_url": {"url": f"data:image/jpeg;base64,{req.image_base64}", "detail": "high"}
         }
 
-    system_prompt = """You are ActionLens Vision AI — a disaster image verification specialist.
-Analyse submitted community hazard images to verify authenticity and assess severity.
+    system_prompt = """You are ActionLens Vision AI — an early warning ground report verification specialist.
+Analyse submitted hazard images to verify authenticity of Ground Reports and assess severity.
 Output ONLY valid JSON. No prose, no markdown, no code blocks."""
 
-    user_prompt = f"""Analyse this community-submitted disaster image.
+    user_prompt = f"""Analyse this community-submitted Ground Report image.
 
 REPORTED CATEGORY: {req.category.upper()}
 REPORTER DESCRIPTION: "{req.description}"
@@ -344,7 +344,7 @@ async def rag_query(req: RagQueryRequest):
                 summary="Core regional early action protocols for Eastern Africa."
             ))
 
-        system_prompt = """You are ActionLens RAG Early Warning Assistant — an expert AI decision support system trained on IGAD, ICPAC, and NDMA disaster response frameworks.
+        system_prompt = """You are ActionLens RAG Early Warning Assistant — an expert AI decision support system trained on IGAD, ICPAC, and NDMA early warning and anticipatory action frameworks.
 Answer the user's operational question based strictly on the provided policy documents and guidelines.
 Keep your response structured, authoritative, and concise using markdown bullet points."""
 
