@@ -168,7 +168,7 @@ graph TD
     Next -->|Queries & Updates| SupaDB
     Next -->|Auth Verification| SupaAuth
     Next -->|Forwards AI Operations| FastAPI
-    FastAPI -->|Vector Searches (RPC)| SupaDB
+    FastAPI -->|"Vector Searches (RPC)"| SupaDB
     FastAPI -->|Generative & Embedding Tasks| OpenAI
     UI -->|Image Uploads| SupaStore
 ```
