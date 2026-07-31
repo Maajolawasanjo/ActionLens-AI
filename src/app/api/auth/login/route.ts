@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { LoginSchema } from "@/lib/validations/auth";
-import { verifyUserCredentials } from "@/lib/auth-store";
 import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
 import { ZodError } from "zod";
 
 export async function POST(request: Request) {
@@ -9,85 +9,63 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = LoginSchema.parse(body);
 
-    let user = null;
-    let fallbackUsed = false;
+    const supabase = await createClient();
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: validatedData.email,
+      password: validatedData.password,
+    });
 
-    // 1. Try Supabase Auth First
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (authError || !authData.user) {
+      return NextResponse.json(
+        { error: "Invalid email or password." },
+        { status: 401 }
+      );
+    }
+
+    // Fetch user profile from database
+    let { data: profile } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", authData.user.id)
+      .single();
+
+    if (!profile) {
       try {
-        const supabase = await createClient();
-        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-          email: validatedData.email,
-          password: validatedData.password,
-        });
+        const { data: newProfile } = await supabase
+          .from("profiles")
+          .insert({
+            id: authData.user.id,
+            email: authData.user.email || validatedData.email,
+            full_name: authData.user.user_metadata?.full_name || "User",
+            role: authData.user.user_metadata?.role || "government",
+            onboarding_complete: false,
+          })
+          .select()
+          .single();
 
-        if (!authError && authData.user) {
-          // Fetch user profile from database
-          let { data: profile } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", authData.user.id)
-            .single();
-
-          if (!profile) {
-            try {
-              const { data: newProfile } = await supabase
-                .from("profiles")
-                .insert({
-                  id: authData.user.id,
-                  email: authData.user.email || validatedData.email,
-                  full_name: authData.user.user_metadata?.full_name || "User",
-                  role: authData.user.user_metadata?.role || "government",
-                  onboarding_complete: false,
-                })
-                .select()
-                .single();
-
-              if (newProfile) {
-                profile = newProfile;
-              }
-            } catch (insertErr) {
-              console.error("[Login Explicit Profile Insert Failed]", insertErr);
-            }
-          }
-
-          if (profile) {
-            user = {
-              id: profile.id,
-              email: profile.email,
-              full_name: profile.full_name,
-              role: profile.role,
-              onboarding_complete: profile.onboarding_complete,
-              created_at: profile.created_at,
-            };
-          }
+        if (newProfile) {
+          profile = newProfile;
         }
-      } catch (err) {
-        console.warn("[Supabase Login Attempt Failed, falling back]", err);
-        fallbackUsed = true;
+      } catch (insertErr) {
+        console.error("[Login Explicit Profile Insert Failed]", insertErr);
       }
-    } else {
-      fallbackUsed = true;
     }
 
-    // 2. Fallback to Local Persistent Store
-    if (fallbackUsed || !user) {
-      const localUser = verifyUserCredentials(validatedData.email, validatedData.password);
-      if (!localUser) {
-        return NextResponse.json(
-          { error: "Invalid email or password." },
-          { status: 401 }
-        );
-      }
-      user = {
-        id: localUser.id,
-        email: localUser.email,
-        full_name: localUser.full_name,
-        role: localUser.role,
-        onboarding_complete: localUser.onboarding_complete,
-        created_at: localUser.created_at,
-      };
+    if (!profile) {
+      return NextResponse.json(
+        { error: "User profile could not be retrieved or established." },
+        { status: 401 }
+      );
     }
+
+    const user = {
+      id: profile.id,
+      email: profile.email,
+      full_name: profile.full_name,
+      role: profile.role,
+      onboarding_complete: profile.onboarding_complete,
+      created_at: profile.created_at,
+    };
 
     const response = NextResponse.json({
       status: "success",
@@ -95,22 +73,20 @@ export async function POST(request: Request) {
       message: "Logged in successfully.",
     });
 
-    response.cookies.set("actionlens_demo_user", "true", { path: "/", maxAge: 86400 });
-    response.cookies.set("actionlens_user_id", user.id, { path: "/", maxAge: 86400 });
+    // Copy cookies from Next.js cookieStore to the response headers
+    const cookieStore = await cookies();
+    for (const cookie of cookieStore.getAll()) {
+      response.cookies.set(cookie.name, cookie.value, {
+        path: "/",
+        ...cookie.options,
+      });
+    }
 
     return response;
   } catch (error) {
-    if (error instanceof ZodError) {
-      return NextResponse.json(
-        { error: "Invalid email or password." },
-        { status: 400 }
-      );
-    }
-
     return NextResponse.json(
       { error: "Invalid email or password." },
       { status: 401 }
     );
   }
 }
-

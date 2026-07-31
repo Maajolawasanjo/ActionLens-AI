@@ -44,8 +44,6 @@ export default function DashboardPage() {
       try {
         const res = await fetch("/api/auth/me");
         if (!res.ok) {
-          document.cookie = "actionlens_demo_user=; path=/; max-age=0";
-          document.cookie = "actionlens_user_id=; path=/; max-age=0";
           window.location.href = "/login";
           return;
         }
@@ -58,14 +56,10 @@ export default function DashboardPage() {
           }
           setLoading(false);
         } else {
-          document.cookie = "actionlens_demo_user=; path=/; max-age=0";
-          document.cookie = "actionlens_user_id=; path=/; max-age=0";
           window.location.href = "/login";
         }
       } catch (err) {
         console.warn("[Profile Load Notice]", err);
-        document.cookie = "actionlens_demo_user=; path=/; max-age=0";
-        document.cookie = "actionlens_user_id=; path=/; max-age=0";
         window.location.href = "/login";
       }
     }

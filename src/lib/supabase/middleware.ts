@@ -64,8 +64,7 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/forgot-password");
 
   // 2. Authentication Enforcement
-  const isDemoUser = request.cookies.get("actionlens_demo_user")?.value === "true";
-  const isAuthenticated = !!user || isDemoUser;
+  const isAuthenticated = !!user;
 
   // Protect app routes: require authentication
   if (!isAuthenticated && (isAppRoute || isOnboardingRoute)) {
