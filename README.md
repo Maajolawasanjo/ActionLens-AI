@@ -19,7 +19,7 @@ Short Description: An AI-powered Early Warning & Anticipatory Action Platform th
 
 * **Live Demo:** [https://action-lens-ai.vercel.app/](https://action-lens-ai.vercel.app/)
 * **GitHub Repository:** [https://github.com/Maajolawasanjo/ActionLens-AI](https://github.com/Maajolawasanjo/ActionLens-AI)
-* **Demo Video:** [YouTube Product Demo Link]
+* **Demo Video:** [https://youtu.be/ZdnzdotLYT8](https://youtu.be/ZdnzdotLYT8)
 * **FastAPI Service Health:** `http://localhost:8000/health`
 
 ---

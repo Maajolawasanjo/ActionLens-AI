@@ -18,7 +18,7 @@ Live Demo:
 https://action-lens-ai.vercel.app/
 
 Demo Video:
-[YouTube Product Demo Link]
+https://youtu.be/ZdnzdotLYT8
 
 ---
 
@@ -160,7 +160,7 @@ https://github.com/Maajolawasanjo/ActionLens-AI
 https://action-lens-ai.vercel.app/
 
 ### Demo Video
-[YouTube Product Demo Link]
+https://youtu.be/ZdnzdotLYT8
 
 ---
 
