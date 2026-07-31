@@ -22,21 +22,32 @@ Demo Video:
 
 ---
 
-## Project Overview (Maximum 250 words)
+## Project Overview
 
-ActionLens AI is a decision intelligence platform designed to translate raw environmental telemetry and climate data into role-specific, actionable directives for stakeholders in the East Africa IGAD sub-region. The Horn of Africa faces frequent, severe climate events such as flash floods, landslides, and droughts. While regional early warning systems exist, they typically generate broad warnings that fail to guide local actions. This results in "action paralysis," where local communities and response agencies receive alerts but lack the concrete instructions needed to coordinate effectively. This gap frequently leads to avoidable losses of lives and agricultural capital. 
+ActionLens AI is a decision intelligence platform designed to translate raw environmental telemetry and climate data into role-specific, actionable directives for stakeholders in the East Africa IGAD sub-region. The Horn of Africa faces frequent, severe climate events such as flash floods, landslides, and droughts. While regional early warning systems exist, they typically generate broad warnings that fail to guide local actions. This results in "action paralysis," where local communities and response agencies receive alerts but lack the concrete instructions needed to coordinate effectively. This gap frequently leads to avoidable losses of lives and agricultural capital.
 
-ActionLens AI addresses this by providing tailor-made guidance checklists to citizens, first responders, NGOs, government officials, and health workers. By bridging the gap between hazard telemetry and response coordination, the platform reduces operational delay, secures evacuation pathways, and protects vulnerable communities and critical assets from climate shocks.
+ActionLens AI addresses this by providing tailor-made guidance checklists to citizens, first responders, NGOs, government officials, and health workers. By converting weather telemetry, flood reports, satellite observations, and community submissions into operational decisions tailored to each stakeholder, the platform reduces decision time by transforming early warnings into role-specific action plans within seconds.
 
 ---
 
-## Solution Details (Maximum 250 words)
+## Solution Details
 
 The platform ingests real-time telemetry from environmental sensors and crowd-sourced hazard reports. Upon onboarding, users complete a profile establishing their role and region to receive a personalized dashboard interface. Citizens can report local incidents, upload geo-tagged photos, and receive immediate safety instructions. Responders access real-time dispatch timelines and incident locations, while government officials view regional analytics and coordinate funding.
 
-AI is integrated directly into the core workflow. GPT-4o processes regional telemetry to generate localized, role-specific action lists. The platform uses GPT-4o Vision to verify citizen-submitted hazard photos, filtering out false reports by confirming the incident category and severity. A Policy RAG Assistant converts official disaster SOPs into searchable vector embeddings, allowing users to query protocols with natural language.
+ActionLens AI relies on OpenAI APIs for three core capabilities: GPT-4o for structured emergency decision generation, GPT-4o Vision for validating community-submitted disaster images, and text-embedding-3-small for semantic retrieval of disaster policies through a RAG pipeline.
 
 Unlike existing platforms that broadcast generic alerts, ActionLens AI isolates responsibilities by stakeholder role. This ensures that every actor—from a farmer safeguarding grain stores to a state administrator releasing disaster response funds—receives a customized, actionable checklist rather than a generic weather warning.
+
+---
+
+## Why ActionLens AI is Different
+
+* **Role-Specific Checklists Instead of Generic Alerts**: Translates broad regional warnings into concrete tasks for specific actors, preventing action paralysis.
+* **AI-Verified Citizen Science**: Uses multi-modal vision to filter out false or low-quality hazard reports before dispatcher review.
+* **Grounded Retrieval-Augmented Generation**: Answers policy and SOP questions by searching regional guidelines (using text-embedding-3-small in pgvector) instead of generating hallucinations.
+* **Multi-Stakeholder Collaboration**: Synchronizes real-time logistical state between citizens, first responders, NGOs, and state officials.
+* **Real-Time Map Synchronization**: Feeds live crowdsourced reports to a shared geospatial map via WebSockets immediately.
+* **Global-Ready Resilient Architecture**: Decouples Next.js frontend, Supabase database, and FastAPI microservice layers to scale under emergency workloads.
 
 ---
 
@@ -63,22 +74,20 @@ Unlike existing platforms that broadcast generic alerts, ActionLens AI isolates 
 
 ## Key Features
 
-- **AI Recommendations**: Dynamically generated, localized action directives customized by user role and region.
-- **Community Reports**: Geo-tagged hazard logs submitted by citizens with status tracks.
-- **Vision AI Verification**: Multi-modal image analysis validating physical reports in real time to filter noise.
-- **Interactive Disaster Map**: Geospatial representation of regional alerts, shelters, and hospital capacities.
-- **Emergency Alerts**: Real-time push broadcasts triggered by regional telemetry updates.
-- **Impact Simulator**: Predictive tool displaying projected casualties and asset losses based on evacuation delay.
-- **RAG Assistant**: Dialogue interface answering protocol questions grounded in NDMA and ICPAC SOPs.
-- **Analytics Dashboard**: Trend charts showing prediction accuracy, hazard types, and response times.
-- **Emergency Resource Directory**: Searchable registry of regional shelters, hospitals, and contact lines.
-- **Role-Based Dashboards**: Isolated interfaces for Citizens, Responders, NGOs, Governments, and Admins.
-- **Realtime Updates**: Synchronized data pipeline using WebSockets to update dashboard feeds instantly.
-- **Notifications**: Instant pop-up warnings broadcast during critical atmospheric shifts.
-- **Offline Report Queue**: Local client storage caching submitted reports when connection drops.
-- **Admin Control Panel**: Back-office center showing system health logs and operational costs.
-- **Prompt Manager**: Direct system template editor for adjusting LLM generation formats.
-- **Knowledge Base**: Curated repository of emergency guidelines, checklists, and manual links.
+### Core Winning Features
+
+* **AI Recommendations**: Instantly generates localized action checklists customized by user role and region, reducing response delay from hours to seconds.
+* **Vision AI Verification**: Multi-modal image analysis validating physical reports in real time to filter noise and prevent false alarms.
+* **Community Reports**: Geotagged hazard reports submitted by citizens, facilitating local-to-regional disaster logging.
+* **Interactive Disaster Map**: Visualizes regional alerts, verified community hazards, shelters, and hospital capacities.
+* **RAG Emergency Assistant**: Conversational assistant answering protocol questions grounded in NDMA and ICPAC SOPs with document citations.
+
+### Supporting Platform Capabilities
+
+* **Role-Based Dashboards**: Isolated interfaces for Citizens, Responders, NGOs, Governments, and Administrators.
+* **Real-Time Data Feeds**: Dynamic WebSocket synchronization updating map overlays and notifications without reloads.
+* **Impact Consequence Simulator**: Displays estimated displacement numbers and infrastructure threat vectors depending on evacuation delay.
+* **Admin Control Panel**: Back-office suite managing system prompt templates, indexing RAG documents, and tracking API cost metrics.
 
 ---
 
@@ -162,4 +171,3 @@ https://action-lens-ai.vercel.app/
 - **Offline Syncing Nodes**: Local community servers caching regional databases to maintain core maps and checklists during internet blackouts.
 - **Multi-Model Backup Strategy**: Auto-failover logic routing requests to open-source models (e.g. Llama-3) if external APIs go offline.
 - **Satellite and Map AI Auto-Detection**: Integration with Google Maps Platform and high-resolution satellite imagery pipelines to automatically scan geographic sectors for early signals of flooding, drought, or wildfires, generating automated hazard alerts without requiring manual user reports.
-
